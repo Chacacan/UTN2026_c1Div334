@@ -1,8 +1,39 @@
+/* =======================
+    Ajustes genericos
+    =================== */
+
+/* Usando fuentes locales */
+@font-face {
+    font-family: "Alegre";
+    src: url("../fonts/Happy_Monkey/HappyMonkey-Regular.ttf");
+}
+
+
+header {
+    background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F2893944.jpg&f=1&nofb=1&ipt=d60b1b037d25eafd192823d1ac5400a4c46f28049e9cebea83fd4518452870c5");
+}
+
+
+/* Combinador descendiente, estila todos los h1 adentro del header */
+header h1 {
+    text-align: center;
+    /* font-family: "Supermercado One"; */
+    font-family: "Alegre";
+    margin: 0;
+    color: deeppink;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 0px;
+}
+
+/* Selector multiple, separamos con , los selectores para aplicar un mismo estilo a multiples elementos */
+span, p {
+    /* font-family: monospace; */
+}
+
+
 /* Selector de clase .nombreClase -> Seleccionar conjuntos de elementos */
 
 .contenedor-ciudad {
-    padding: 5px;
-    margin-bottom: 5px;
     height: 400px;
     background-size: cover;
     /* background-repeat: no-repeat; */
@@ -12,7 +43,8 @@
 }
 
 .titulo-ciudad {
-    font-size: 22px;
+    margin-top: 0;
+    font-size: 25px;
     color: rgb(89, 212, 147);
     font-style: italic;
 }
@@ -23,6 +55,7 @@
     text-align: center;
     /* opacity: 0.5; */
     height: 100%;
+    padding: 25px 65px;
 }
 
 .foto-ciudad {
@@ -49,4 +82,8 @@
 #cuba {
     /* background-color: tomato; */
     background-image: url("https://imgs.search.brave.com/CcHpt3lK7xRtMekcOgvcpfwm1QPa63XUpQgs4jit3ZI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ4/NDE1MjM4NC9waG90/by9zYW50aWFnby1k/ZS1jdWJhLWN1YmEu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PVBsQVhJRmg3b01D/RExzekxwSWRkSWxD/a29UeUVIRjNQWV92/VFdjaE5objg9");
+}
+
+#foto-narwhal {
+    width: 75%;
 }

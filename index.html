@@ -13,8 +13,23 @@ Pueden ser de multiples lineas -->
 
     <!-- CSS Interno, recomendado solo para paginas diminutas -->
     <style>
+        /*
+        p:hover {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            font-family: monospace;
+            cursor: pointer;
+        }
 
-        
+        p:active {
+            background-color: blue;
+            color: deeppink;
+            padding: 20px;
+            font-family: monospace;
+            
+        }
+            */
         /* Selector de etiquetas 
         h3 {
             color: red;
@@ -28,6 +43,42 @@ Pueden ser de multiples lineas -->
             /* Le sacamos el margen por defecto de el body del HTML */
             margin: 0; 
         }        
+
+        #pruebas {
+            border: 2px solid blue;
+        }
+
+        /* Los combinadores en css son caracteres que permiten seleccionar elementos en funcion de otros elementos en el arbol de DOM */
+
+        /* Combinador descendiente " "
+        Consiste en un espacio en blanco y selecciona TODOS los elementos que son descendientes de un elemnto padre, sin importar que tan profundo esten en el arbol del DOM */
+        div p {
+            color: blue;
+        }
+
+        /* Combinador de hijo directo ">"
+        Selecciona solo los elementos que son hijos inmediatos de un elemento padre
+        */
+
+        div > p {
+            color: red;
+        }
+
+        /* Combinador de hermano adyacente "+"
+        El combinador de hermano adyacente selecciona un HERMANO INMEDIATO de otro elemento, el que aparece juisto despues de el
+        */
+
+        h1 + p {
+            color: green;
+        }
+
+        /* Combinador de hermano general "~" 
+        El combinador de hermano general selecciona todos los elementos hermano de un elemento, pero no necesariamente adyacentes
+        */
+
+        h1 ~ p {
+            color: purple;
+        }
     </style>
 
     <!-- CSS Externo -->
@@ -42,6 +93,16 @@ Pueden ser de multiples lineas -->
 
 <!-- body o cuerpo de la pagina, contiene la parte visible -->
 <body>
+
+    <!-- Pruebas pseudoclases -->
+    <section id="pruebas">
+
+       <h1>Titulo</h1>
+       <p>Este parrafo sera verde porque es hermano adyacente del h1</p>
+       <p>Este parrafo no sera verde</p>
+        
+
+    </section>
 
     <header>
         <h1>Viaje de Egresados Progra III</h1>
@@ -182,6 +243,8 @@ Pueden ser de multiples lineas -->
                 This is<sub> subscript</sub> and <sup>superscript</sup>
             </p>
         </section>
+
+
         
     </main>
 

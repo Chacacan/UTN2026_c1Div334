@@ -16,10 +16,10 @@
     - combinadores
     - pseudoclases
     - position
-    - continuamos avanzando css w3schools
     - *live coding*
 
 - CSS III
+    - continuamos avanzando css w3schools
     - Estilos avanzados
     - flexbox
     - media queries

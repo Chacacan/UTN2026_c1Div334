@@ -1,5 +1,13 @@
 # UTN2026_c1Div334
 
+## Videos recomendados
+### [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
+
+### [Boom de la IA y tendencias de recontrataciones para 2027](https://www.youtube.com/watch?v=OFmxKgaLN80)
+
+---
+
+## PRACTICAS
 ### Practica maquetacion grupal, [pagina apple](https://www.apple.com/)
 - [GDB Apple I](https://onlinegdb.com/cyDNoPiPT)
 
@@ -34,5 +42,3 @@
 ---
 
 ## Guias
-
-## [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)

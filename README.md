@@ -1,5 +1,12 @@
 # UTN2026_c1Div334
 
+## Prox clase
+- Resolver dudas JavaScript I y II
+- Avanzamos con JavaScript III 
+- Clase Bootstrap
+
+---
+
 ## Videos recomendados
 ### [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
 
@@ -13,6 +20,7 @@
 
 
 ---
+
 
 ## Cronograma frontend
 - HTML I hasta html forms

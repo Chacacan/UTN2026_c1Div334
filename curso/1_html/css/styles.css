@@ -1,0 +1,34 @@
+/* Selector de clase .nombreClase -> Seleccionar conjuntos de elementos */
+
+.contenedor-ciudad {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.titulo-ciudad {
+    font-size: 22px;
+    color: purple;
+    font-style: italic;
+}
+
+.foto-ciudad {
+    width: 200px;
+}
+
+/* Selector de id #nombreId -> Permite seleccionar elementos unicos */
+
+#estero {
+    background-color: khaki;
+}
+
+#guayaquil {
+    background-color: darkseagreen;
+}
+
+#compostela {
+    background-color: mediumturquoise;
+}
+
+#cuba {
+    background-color: tomato;
+}

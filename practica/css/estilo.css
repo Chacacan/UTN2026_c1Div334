@@ -1,0 +1,26 @@
+
+.contenedor-receta {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.contenedor-ingredientes{
+    background-color: beige;
+}
+
+.imagen-receta {
+    width: 500px;
+}
+
+body {
+    background-color: red;
+}
+
+h1 {
+   text-align: center; 
+}
+
+#pan {
+    background-color: aquamarine;
+}
+

@@ -1,6 +1,16 @@
 # [JavaScript](https://es.wikipedia.org/wiki/JavaScript)
 
 
+
+## JavaScript IV / Introduccion a arrays, metodos de strings y arrays
+```js
+
+```
+
+
+---
+
+
 ## JavaScript III / Scope y ambito, funciones, tipos de funciones
 ```js
 /*======================
@@ -417,7 +427,10 @@ console.log(saludarPersona("Ari"));
 // Flecha 5: Muy populares en las funciones de orden superior y callbacks
 ```
 
+
 ---
+
+
 
 ## JavaScript II / Control de Flujo, Estructuras de Control, Condicionales y Bucles I
 

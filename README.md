@@ -1,9 +1,8 @@
 # UTN2026_c1Div334
 
+
 ## Prox clase
-- Clase Bootstrap
-- Resolver dudas JavaScript I y II
-- Avanzamos con JavaScript III y IV
+- 
 
 ---
 
@@ -68,6 +67,15 @@
 
 ## Backend
 ### [Clase 2hs Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
+### Repasar paradigmas de programacion en JavaScript al llegar a Express.js
+
+
+---
+
+## Sitios recomendados para ir a comprar
+- Galeria Jardin
+- Polotecno (billinghurst y Corrientes)
+- Noxiestore mexx y  goldentech
 
 
 ---

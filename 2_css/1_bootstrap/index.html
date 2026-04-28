@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="index.css">
+
+    <!-- Import remoto de Bootsrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Import local de Bootstrap -->
+    <!-- <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css"> -->
+</head>
+<body>
+    <!-- [HEADERS] https://getbootstrap.com/docs/5.0/examples/headers/ -->
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-outline-primary me-2">Login</button>
+            <button type="button" class="btn btn-primary">Sign-up</button>
+        </div>
+        </header>
+    </div>
+
+    <!-- Ejemplo de aplicacion de estilo Bootstrap -->
+    <div class="container">
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus nam quibusdam error eos dicta fugit quo rem, molestias architecto libero. Sequi expedita temporibus aperiam. Laboriosam iure illo natus corrupti harum.
+        </p>
+    </div>
+
+    <div>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus nam quibusdam error eos dicta fugit quo rem, molestias architecto libero. Sequi expedita temporibus aperiam. Laboriosam iure illo natus corrupti harum.
+        </p>
+    </div>
+
+    <br><br>
+    <hr>
+    <br><br>
+
+    <!-- Ejemplo de como Bootstrap aplica estilos naturalmente (sin aplicar una clase) -->
+    <input type="text" placeholder="Ingrese su nombre">
+
+    <br><br>
+    <hr>
+    <br><br>
+
+    <!-- IMPORTANTE !! Lo mejor de Bootstrap. Distribucion visual de los elementos -->
+    <div class="row" style="margin: 0px;">
+        <!-- Seccion 1 -->
+        <div class="col-md-6">
+            <h2>Seccion 1</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, 
+                in harum commodi repudiandae dignissimos quae vel sed labore quis 
+                inventore ea cum aperiam qui a molestias, eius perferendis 
+                voluptatibus exercitationem.
+            </p>
+        </div>
+
+        <!-- (Jugamos entre el valor 12 (como 100%)) -->
+        <!-- Seccion 2 -->
+        <div class="col-md-6">
+            <h2>Seccion 2</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, 
+                in harum commodi repudiandae dignissimos quae vel sed labore quis 
+                inventore ea cum aperiam qui a molestias, eius perferendis 
+                voluptatibus exercitationem.
+            </p>
+        </div>
+    </div>
+
+    <br><br>
+    <hr>
+    <br><br>
+
+    <!-- [FORMS] https://getbootstrap.com/docs/4.1/components/forms/ -->
+    <div class="container">
+        <h2>Formulario de contacto</h2>
+        <form>
+            <div class="mb-3"> <!-- Con por ejemplo "mb-3" hago un margin-bottom de 3px -->
+                <label for="nombre" class="form-label">Nombre completo</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Juan Pérez">
+            </div>
+
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" id="correo" placeholder="nombre@ejemplo.com">
+            </div>
+
+            <div class="mb-3">
+                <label for="mensaje" class="form-label">Mensaje</label>
+                <textarea class="form-control" id="mensaje" rows="3" placeholder="Escribí tu mensaje..."></textarea>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="acepto">
+                <label class="form-check-label" for="acepto">Acepto los términos y condiciones</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="reset" class="btn btn-secondary">Limpiar</button>
+        </form>
+    </div>
+
+    <br><br>
+    <hr>
+    <br><br>
+
+    <!-- Clases chiquitas con estilos chiquitos -->
+    <div class="mt-1">Margen superior de 1 rem</div>
+    <div class="mb-2">Margen inferior de 0.5 rem</div>
+    <div class="ml-3">Margen izquierdo de 1.5 rem</div>
+    <div class="mx-auto">Margen derecho automático (útil para centrar)</div>
+    <div class="p-3">Relleno de 1 rem en todos los lados</div>
+    <div class="px-2">Relleno horizontal de 0.5 rem</div>
+    <div class="py-1">Relleno vertical de 0.25 rem</div>
+
+    <br><br>
+    <hr>
+    <br><br>
+
+    <!-- Más elementos interesantes... -->
+
+    <!-- [SPINNERS] https://getbootstrap.com/docs/4.4/components/spinners/ -->
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <div class="spinner-border text-secondary" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <div class="spinner-border text-success" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <div class="spinner-border text-danger" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <div class="spinner-border text-warning" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <div class="spinner-border text-info" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <div class="spinner-border text-light" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <div class="spinner-border text-dark" role="status">
+        <span class="sr-only"></span>
+    </div>
+
+    <br><br>
+    <hr>
+    <br><br>
+
+    <!-- NOTA IMPORTANTE : En elementos grandes o engorrosos, documentar minimamente. 
+    Desventaja de Bootstrap, ensuciar un poco HTML -->
+
+    <!-- [CARRUSELES] https://getbootstrap.com/docs/5.3/examples/carousel/ -->
+    <div class="container mt-5">
+        <div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
+            
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#miCarrusel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#miCarrusel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#miCarrusel" data-bs-slide-to="2"></button>
+            </div>
+
+            <!-- Carrusel principal -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-80" alt="..." src="https://images.unsplash.com/photo-1770215962799-5ac2ce5a2813?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Título 1</h5>
+                        <p>Descripción de la primera imagen.</p>
+                    </div>
+                </div>
+
+                <!-- Foto 1 -->
+                <div class="carousel-item">
+                    <img class="d-block w-80" alt="..." src="https://images.unsplash.com/photo-1770131091439-9aa7274f544f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Título 2</h5>
+                        <p>Descripción de la segunda imagen.</p>
+                    </div>
+                </div>
+
+                <!-- Foto 2 -->
+                <div class="carousel-item">
+                    <img class="d-block w-80" alt="..." src="https://images.unsplash.com/photo-1769788873355-b65eab5deb55?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Título 3</h5>
+                        <p>Descripción de la tercera imagen.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boton de foto previa -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+
+            <!-- Boton de foto siguiente -->
+            <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    </div>   
+
+    <!-- Aclaración algunos componentes necesitan de Bootstrap JS para funcionar, como los carruseles -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

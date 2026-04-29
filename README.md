@@ -2,7 +2,8 @@
 
 
 ## Prox clase
-- 
+- Continuar JavaScript V desde `4. Almacenamiento de datos en JavaScript`
+
 
 ---
 
@@ -67,10 +68,11 @@
 
 ## Backend
 ### [Clase 2hs Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
-### Repasar paradigmas de programacion en JavaScript al llegar a Express.js
-
+- Repasar paradigmas de programacion en JavaScript al llegar a Express.js
+- Revisar objetos globales en Node.js 
 
 ---
+
 
 ## Sitios recomendados para ir a comprar
 - Galeria Jardin

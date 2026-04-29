@@ -1,10 +1,309 @@
 # [JavaScript](https://es.wikipedia.org/wiki/JavaScript)
 
+## JavaScript V / Objetos y objetos globales. Almacenamiento persistente. Iteracion en arrays, objetos y arrays de objetos
+```js
+
+```
+
+### Por que en JavaScript todo es un objeto?
+En JavaScript, **tanto los objetos como las funciones** se tratan como "ciudadanos de primera clase", lo que significa que **pueden ser asignados a variables pasados como argumentos y ser retornados por otras funciones**.
+
+Aunque no todos los tipos de datos en JS son objetos, muchos tipos de datos tienen comportamiento de objeto o estan envueltos en un objeto:
+
+1. *Datos primitivos*: strings, numeros, booleanos null y undefined. Strings y numeros son "envolturas" de objetos.
+
+2. *Funciones*: En JavaScript las funciones son en realidad objetos de tipo `Function`. Lo que permite asignarlas a variables o pasarlas como argumentos.
+
+3. *Arrays*: Los arrays son tambien objetos en JavaScript, pero un tipo particular de objeto. Un objeto que organiza sus datos mediante indices numerados.
+
+4. *Objetos globales*: Todo el entorno de ejecucion esta basado en objeto globales. `window` en el navegador o `global` en Node.js.
+
+
+---
+
+
+### Que es el entorno de ejecucion en JavaScript?
+**El entorno de ejecución en JavaScript** es el conjunto de mecanismos que permiten la ejecución del código, compuesto por un motor (que incluye el compilador y el motor de ejecución), un bucle de eventos, timers y librerías de APIs específicas del entorno. Los entornos más comunes son el **navegador web** (cliente) y **Node.js** (servidor), aunque existen alternativas como **Deno** o **Bun**.
+
+### Componentes y Tipos de Entorno
+*   **Motor de JavaScript**: Responsable de analizar, compilar y ejecutar el código. En navegadores se usan motores como V8 (Chrome), SpiderMonkey (Firefox) o JavaScriptCore (Safari); en Node.js se utiliza V8.
+*   **Navegador Web**: Ofrece APIs del DOM y del navegador (como `document` o `window`). El código se ejecuta dentro de pestañas independientes para garantizar la seguridad.
+*   **Node.js**: Permite ejecutar JavaScript fuera del navegador, utilizando el sistema operativo y APIs de servidor. El objeto global es `global` (equivalente a `window` en el navegador).
+*   **Compatibilidad**: Si el código no depende de APIs específicas del navegador o del sistema operativo, puede ejecutarse indistintamente en ambos entornos.
+
+### Contexto de Ejecución
+Dentro de este entorno, el código se gestiona mediante el **Contexto de Ejecución** (Execution Context), que define el entorno léxico, las variables disponibles y el valor de `this`.
+
+1.  **Contexto Global**: Se crea al iniciar el script. Contiene variables y funciones declaradas fuera de bloques.
+2.  **Contexto de Función**: Se crea cada vez que se invoca una función, permitiendo el aislamiento de variables locales.
+3.  **Fases**: Cada contexto pasa por una **fase de creación** (donde ocurre el *hoisting* y se establecen los ámbitos) y una **fase de ejecución** (donde el código se procesa línea por línea).
+
+La gestión de estos contextos se realiza mediante una **pila de ejecución** (call stack), una estructura LIFO que determina el orden en que se ejecutan las funciones, asegurando que solo una operación se procese a la vez en el hilo principal.
+
+
+---
 
 
 ## JavaScript IV / Introduccion a arrays, metodos de strings y arrays
 ```js
+/*===========================
+    Arrays y Objetos en JS
+=============================
 
+En JavaScript, los arrays y objetos son estructuras de datos fnudamentales.
+    - Los arrays se utilizan para almacenar una lista ordenada de elementos
+    - Los objetos son ideales para almacenar datos con propiedades clave-valor
+
+
+///////////////
+// Comparacion
+
+Uso principal:
+    - Array: Lista ordenada de elementos
+    - Objeto: Coleccion de pares clave-valor
+
+Acceso a datos:
+    - Array: Por indice         ->  array[0]
+    - Objeto: 
+        Notacion de punto       -> objeto.propiedad
+        Notacion de corchete    -> objeto["propiedad"]
+
+Metodos:
+    - Array: push(), pop(), map(), forEach()
+    - Objeto: Metodos personalizados y funciones
+
+Iteracion:
+    - Array: forEach, map, bucles, etc
+    - Objeto: for...in, Object.keys(), Object.values()
+
+
+=====================
+    Arrays en JS
+=====================
+
+Un array es una lista ORDENADA de elementos, donde cada uno tiene una posicion o indice.
+
+Los arrays en JavaScript son muy flexibles: pueden contener cualquier tipo de dato (y los elementos no tienen que ser del mismo tipo)
+    - numeros
+    - strings
+    - booleanos
+    - otros arrays
+    - objetos
+    - funciones
+    - etc
+*/
+
+let colores = ["rojo", "azul", "verde", "amarillo"];
+
+// Los elementos en un array tienen indices que comienzan en 0
+console.log(colores[1]); // azul
+console.log(colores[3]); // amarillo
+
+
+/*===================
+    Objetos en JS
+=====================
+
+Un objeto en JavaScript es una coleccion de pares clave-valor.
+Las claves son strings que identifican a cada valor, lo cual nos permite un acceso rapido y estructurado a los datos.
+
+Los objetos son utiles cuando queremos representar una entidad con multiples propiedades
+
+Accedemos a las propiedades de un objeto
+    - Notacion de punto
+    - Notacion de corches
+*/
+
+// Creacion literal de objeto
+let persona = {
+    nombre: "Estefano",
+    edad: 25,
+    ciudad: "Lanus"
+};
+
+
+// Notacion de punto
+console.log(persona.nombre);
+
+// Notacion de corchetes
+console.log(persona["ciudad"]);
+
+// Los objetos tambien pueden tener metodos, que son funciones almacenadas en una propiedad
+let gato = {
+    nombre: "Merlin",
+    maullar: function(){ 
+        console.log("Miau!");
+    }
+}
+
+gato.maullar();
+
+
+// Agregar una propiedad
+persona.pais = "Argentina";
+console.log(persona);
+
+
+// Eliminar una propiedad
+delete persona.edad;
+console.log(persona);
+
+
+
+/*=============================
+    Metodos de strings en JS
+===============================
+
+Los strings en JavaScript son tipos de datos primitivos, PERO JavaScript los "envuelve" o trata como si fueran objetos -> Object Wrappers o envolvedores de objetos
+
+JavaScript, al tratarlos como objetos, les proporciona metodos. A esto nos referimos con los object wrappers */
+
+
+// 1. length: Devuelve la longitud del string
+console.log("Hola".length); // 4
+
+
+// 2. charAt(index): Devuelve el caracter en la posicion especificada
+console.log("Hola".charAt(1)); // o
+
+
+// 3. concat(string1, string2): Concatena strings
+console.log("Hola".concat(" ", "mundo!")); // Hola mundo!
+
+
+// 4. includes(substring): Devuelve true si el substring esta en el string
+console.log("JavaScript".includes("Script")); // true -> es case sensitive
+
+
+// 5. startsWith(substring): Comprueba si el string COMIENZA con el substring
+
+
+// 6. endsWith(substring): Comprueba si el string TERMINA con el substring
+
+
+// 7. indexOf(substring): Devuelve el indice de la PRIMERA aparicion del substring
+console.log("banana".indexOf("a")); // 1
+
+
+// 8. lastIndexOf(substring): Devuelve el indice de la ULTIMA aparicion del substring
+console.log("banana".lastIndexOf("a")); // 5
+
+
+// 9. replace(searchValue, newValue): Reemplaza una parte del string
+console.log("Hola mundo".replace("mundo", "Div 334!")); // Hola Div 334!
+
+
+// 10. replaceAll(searchValue, newValue): Reemplaza TODAS las apariciones del string
+console.log("1,2,3".replaceAll(",", ";")); // 1;2;3
+
+
+// 11. toLowerCase(): Convierte a minusculas
+console.log("JAVASCRIPT".toLowerCase()); // javascript
+
+
+// 12. toUpperCase(): Convierte a mayusculas
+console.log("hola".toUpperCase()); // HOLA
+
+
+// 13. trim(): Elimina espacios en blanco al inicio y al final
+console.log("     hola  ".trim()); // hola
+
+
+// 14. trimStart(): Elimina espacios al inicio
+
+
+// 15. trimEnd(): Elimina espacios al final
+
+
+// 16. slice(start, end): Extrae parte del string
+console.log("JavaScript".slice(0, 4)); // Java (el caracter 4 no se incluye)
+console.log("JavaScript".slice(-2)); // pt
+
+
+// 17. substring(start, end): Similar a slice, pero NO acepta negativos
+console.log("JavaScript".substring(4, 10)); // Script
+
+
+// 18. split(separator): Divide el string en un array
+console.log("rojo,verde,azul".split(",")); // ["rojo","verde","azul"]
+
+
+// 19. repeat(count): Repite el string
+console.log("ji".repeat(3));
+
+
+// 20. match(regex): Devuelve coincidencias con una expresion regular (REGEX o Regular Expression)
+console.log("abc123".match(/\d+/)); // ["123"]
+
+
+
+/*=============================
+    Metodos de array en JS
+===============================
+Los metodos que nos provee JavaScript nos permiten modificar, recorrer, filtrar y trasformar arrays
+*/
+let arr = [1, 2];
+
+// 1. length: Devuelve la longitud del array
+console.log(arr.length); // 2
+
+//////////////////////////////
+// Operar al final del array
+
+// 2. push(element): Agrega un elemento AL FINAL del array
+arr.push(3);
+console.log(arr); // [1, 2, 3]
+
+
+// 3. pop(): Elimina el ULTIMO elemento y lo devuelve
+console.log(arr.pop()); // 3
+console.log(arr); // [1, 2]
+
+
+//////////////////////////////////
+// Operar al principio del array
+
+// 4. unshift(element): Agrega un elemento AL PRINCIPIO del array
+arr.unshift(0); 
+console.log(arr); // [0, 1, 2]
+
+// 5. shift(): Elimina el PRIMER elemento y lo devuelve
+console.log(arr.shift()); // 0
+console.log(arr); // [1, 2]
+
+
+// 6. concat(array): Concatena arrays
+console.log([1, 2].concat([3, 4])); // [1, 2, 3, 4]
+
+
+// 7. join(separator): Une los elementos en un string
+console.log([1, 2, 3].join(" ")); // 1 2 3
+console.log([1, 2, 3].join(",")); // 1,2,3
+
+
+// 8. slice(start, end): Extrae una copia parcial del array
+console.log([1, 2, 3, 4].slice(1, 3)); // [2, 3] (la posicion 3 no se incluye)
+
+
+// 9. splice(start, deleteCount, ...items): modifica el array in situ. Puede borrar y agregar
+let nuevoArr = [1, 2, 3];
+// En la posicion 1, modificamos 1 caracter, lo reemplazamos por "a"
+nuevoArr.splice(1, 1, "a");
+console.log(nuevoArr); // [1, "a", 3]
+
+
+// 10. indexOf(element): Devuelve la PRIMERA POSICION del elemento (si no existe, devuelve -1)
+console.log([1, 2, 3].indexOf(2)); // 1
+
+
+// 11. lastIndexOf(element): Devuelve la ULTIMA posicion en el array
+
+
+// 12. includes(element): Devuelve true si el elemento existe
+console.log([1, 2, 3].includes(2)); // true
+
+
+// Proximos metodos en JavaScript V
 ```
 
 

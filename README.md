@@ -7,6 +7,10 @@
 
 ---
 
+## Recursos
+- [Editor online JavaScript](https://runjs.app/play)
+
+
 ## Videos recomendados
 ### [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
 
@@ -71,6 +75,7 @@
 - Repasar paradigmas de programacion en JavaScript al llegar a Express.js
 - Revisar objetos globales en Node.js 
 
+
 ---
 
 
@@ -78,6 +83,7 @@
 - Galeria Jardin
 - Polotecno (billinghurst y Corrientes)
 - Noxiestore mexx y  goldentech
+- [Compras online / tiendamia](https://tiendamia.com.ar/)
 
 
 ---

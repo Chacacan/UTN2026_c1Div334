@@ -1,9 +1,37 @@
 # [JavaScript](https://es.wikipedia.org/wiki/JavaScript)
 
-## JavaScript V / Objetos y objetos globales. Almacenamiento persistente. Iteracion en arrays, objetos y arrays de objetos
-```js
+### LUNES 18 MAYO 1er PARCIAL
 
+## JavaScript V / Objetos y objetos globales. Almacenamiento persistente. Iteracion en arrays, objetos y arrays de objetos
+
+- *Clave en ete modulo, intentar cranear como hacer las operaciones de transformacion, filtrado, etc sin usar estos metodos!*
+```js
+// Continuar desde reduce()
 ```
+
+
+
+---
+
+
+### *Como ejecuta las instrucciones JavaScript internamente?*
+**JavaScript internamente “lee” el código antes de ejecutarlo**, realizando un proceso en dos fases:
+
+**1. Fase de compilación** (o creación del contexto)
+
+Antes de ejecutar línea por línea, el motor de JavaScript analiza todo el código. En esta etapa:
+
+- Registra variables y funciones.
+- Determina el alcance (scope).
+- Prepara el entorno de ejecución.
+
+**2. Fase de ejecución**
+
+Recién después ejecuta el código en orden.
+
+
+---
+
 
 ### Por que en JavaScript todo es un objeto?
 En JavaScript, **tanto los objetos como las funciones** se tratan como "ciudadanos de primera clase", lo que significa que **pueden ser asignados a variables pasados como argumentos y ser retornados por otras funciones**.
@@ -30,6 +58,8 @@ Aunque no todos los tipos de datos en JS son objetos, muchos tipos de datos tien
 *   **Navegador Web**: Ofrece APIs del DOM y del navegador (como `document` o `window`). El código se ejecuta dentro de pestañas independientes para garantizar la seguridad.
 *   **Node.js**: Permite ejecutar JavaScript fuera del navegador, utilizando el sistema operativo y APIs de servidor. El objeto global es `global` (equivalente a `window` en el navegador).
 *   **Compatibilidad**: Si el código no depende de APIs específicas del navegador o del sistema operativo, puede ejecutarse indistintamente en ambos entornos.
+
+---
 
 ### Contexto de Ejecución
 Dentro de este entorno, el código se gestiona mediante el **Contexto de Ejecución** (Execution Context), que define el entorno léxico, las variables disponibles y el valor de `this`.

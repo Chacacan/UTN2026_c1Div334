@@ -251,7 +251,7 @@ Usaremos un array de objetos
 ==========================================================
 
 /////////////////////
-// Metodos clasicos
+// Metodos clasicos (ES5 y anteriores)
 
 ////////////////
 // for clasico
@@ -352,7 +352,10 @@ console.log(estudiantes);
 
 
 
-/*//////////////
+/*////////////////////
+// Metodos funcionales (ES5+)
+
+///////////////
 // map()
 
     const nuevosValores = array.map(elemento => elemento * 2);
@@ -482,6 +485,194 @@ console.log(usuarioActivo); // {nombre: 'Gaston', edad: 21, ocupacion: 'Avogado'
 
 
 
+/*//////////////
+// reduce()
 
-// TO DO, falta reduce
-// Continuar a partir de for...of
+    const suma = array.reduce((acumulador, elemento) => acumulador + elemento, 0)
+
+- Proposito: Reduce el array a un unico valor
+- Retorna: Retorna el valor acumulado
+*/
+
+// Ejemplo 1: Sumar elementos
+const decenas = [10, 20, 30];
+const resultadoDecenas = decenas.reduce((acumulador, numero) => acumulador + numero, 0);
+console.log(resultadoDecenas); // 60
+
+/*
+    - El 0 al final es el valor inicial del acumulador
+    - Sin valor inicial, tomaria el primer elemento como acumulador inicial
+*/
+
+
+// Ejemplo 2: Sumar propiedades, sumaremos el valor de las ventas (cantidad x precio)
+const ventas = [
+    { producto: "Camisa", cantidad: 3, precio: 25 },
+    { producto: "Zapatos", cantidad: 2, precio: 40 },
+    { producto: "Pantalon", cantidad: 1, precio: 80 },
+];
+
+// Si no indicamos el valor inicial acá, hará una concatenación errónea [object Object]8080 
+// El 0 nos permite entender cual va a ser el valor y el TIPO inicial del acumulador
+
+// Opcion 1: Funcion flecha en una sola linea, tal vez un poco complicada y larga de leer
+//const acumuladoVentas = ventas.reduce((acumulador, p) => acumulador + (p.cantidad * p.precio), 0);
+
+// Opcion 2: La misma funcion flecha pero con {} y return para separar mas la logica y facilitar la lectura
+const acumuladoVentas = ventas.reduce((acumulador, p) => {
+    return acumulador + (p.cantidad * p.precio)
+}, 0);
+console.log(acumuladoVentas);
+
+
+
+/*///////////////////
+// Metodos modernos (ES6+)
+
+///////////////
+// for...of
+
+    for (const elemento of array) {
+        console.log(elemento);
+
+        if (elemento === "stop") break; // Podemos usar break!
+    }
+
+- Ventaja: Sintaxis limpia y permite break/continue
+- Desventajas: No provee indice automatico
+*/
+
+// Ejemplo 1: Iterando con posibilidad de break
+const simbolos = ["€", "$", "¥", "£"];
+
+for (const simbolo of simbolos) {
+    // Ejemplo de que podemos prescindir de las {} en una sola instruccion. NO recomendado!
+    if (simbolo === "¥") break; 
+    console.log(simbolo);
+}
+
+// Ejemplo 2: Iterar objetos, buscaremos (al primer) empleado que gane > 3500
+const empleados = [
+    { nombre: "Santiago", salario: 3000 },
+    { nombre: "Nicolas", salario: 3500 },
+    { nombre: "Juan", salario: 4000 },
+    { nombre: "Juansen", salario: 4500 },
+    { nombre: "Nahuel", salario: 2000 },
+];
+
+for (const empleado of empleados) {
+    if (empleado.salario > 3500) {
+        console.log(`${empleado.nombre} gana mas de 3500`);
+        break;
+    }
+}
+
+
+/*///////////////////
+// Metodos de comprobacion
+ 
+    some()
+    every()
+
+    const algunoCumple = array.some(elemento => elemento > 0);
+    const todosCumplen = array.every(elemento => elemento > 0);
+
+- Proposito: Verificar si alguno/todos cumplen una condicion
+- Retorna: Booleano
+*/
+
+// some()
+// Ejemplo 1: Verificar si hay numeros pares
+const listaNumeros = [1, 3, 5, 7, 8];
+const hayPares = listaNumeros.some(num => num % 2 === 0);
+console.log(hayPares); // true
+
+// Ejemplo 2: Verificar si hay usuarios admin
+const usuariosForo = [
+    { nombre: "Xoana", rol: "user" },
+    { nombre: "Uxia", rol: "admin" },
+    { nombre: "Rixela", rol: "user" },
+];
+
+const hayAdmin = usuariosForo.some(user => user.rol === "admin");
+console.log(hayAdmin); // true
+
+
+// every()
+// Ejemplo 1: verificar si todos son positivos
+const todosPositivos = listaNumeros.every(num => num > 0);
+console.log(todosPositivos); // true
+
+
+/* Ejemplo 2: Verificar si todos sacaron > 7
+    const estudiantes = [
+        { nombre: "Nicolas", nota: 6 },
+        { nombre: "Daira", nota: 7 },
+        { nombre: "Juan", nota: 4 },
+        { nombre: "Gabriel", nota: 10 },
+        { nombre: "Gaston", nota: 8 },
+    ];
+*/
+const todosNotables = estudiantes.every(estudiante => estudiante.nota > 7);
+console.log(todosNotables); // false
+
+
+/*===============================  
+    Comparacion de rendimiento
+=================================
+
+1. Bucles clasicos: (for, while) son los mas rapidos para iteraciones simples
+2. Metodos funcionales: (map, filter, etc) son mas lentos pero mas expresivos
+3. for...of ofrece un buen equilibrioo entre rendimiento y legibilidad
+
+
+============================
+    Recomendaciones
+============================
+
+- Transformar array:        map()
+- Filtrar elementos:        filter()
+- Reducir a 1 valor:        reduce()
+- Buscar elemento:          find() y findIndex()
+- Iterar:                   forEach() o for...of
+- Iterar break/continue:    for o for...of
+- Verificar condiciones:    some() y every()
+*/
+
+
+/*===========================
+    Iteracion en Objetos
+=============================
+
+    for...in
+    entries()
+    keys()
+    values()
+
+Objetos como una coleccion de pares clave valor
+Estos metodos nos permiten acceder a propiedades y modificar valores
+*/
+
+// for...in para iterar claves
+const estudiante = { nombre: "Francisco", edad: 36, curso: "Progra III" };
+
+for (const propiedad in estudiante) {
+    console.log(`${propiedad}: ${estudiante[propiedad]}`)
+}
+
+// Object.keys() para obtener claves
+const claves = Object.keys(estudiante);
+console.log(claves); // ['nombre', 'edad', 'curso']
+
+claves.forEach(clave => console.log(clave));
+
+
+// Object.values() para obtener valores
+const valores = Object.values(estudiante);
+console.log(valores);
+
+
+// Object.entries() para obtener pares clave-valor
+for (const [clave, valor] of Object.entries(estudiante)) {
+    console.log(`${clave}: ${valor}`);
+}

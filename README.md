@@ -1,8 +1,11 @@
 # UTN2026_c1Div334
 
 
-## Prox clase
-- Continuar JavaScript V desde `4. Almacenamiento de datos en JavaScript`
+## Prox clase lunes 11/05
+- Resolver dudas de cara al parcial
+- Practicar algo si se necesita
+- Avanzar con clases conceptuales tranca (Protocolo HTTP, markdown, etc)
+
 
 
 ---

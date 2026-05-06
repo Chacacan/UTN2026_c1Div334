@@ -9,8 +9,17 @@
             body {
                 background-color: darkslateblue;
                 color: white;
-                }
-                </style>
+            }
+
+            #contenedor-input, #padre {
+                margin-top: 10px;
+                border: 2px solid;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+            }
+                
+    </style>
 
 
     <!-- Donde colocamos nuestro JavaScript? 
@@ -19,8 +28,24 @@
     <script src="js/main.js" defer></script>
 </head>
 <body>
-    <h1>Introduccion a JavaScript</h1>
+    <h1 id="titulo">Introduccion a JavaScript</h1>
 
+    <p class="mensaje">Primer parrafo</p>
+    <p class="mensaje">Segundo parrafo</p>
+
+    <p id="parrafo">Holi, soy un noble parrafo</p>
+
+    <button id="boton">Soy un boton!</button>
+
+    <div id="contenedor-input">
+        <label for="input">Escribi algo!</label>
+        <input type="text" id="input">
+
+    </div>
+
+    <div id="padre">
+        <button id="hijo">Boton hijo</button>
+    </div>
     <!-- OPCION 2 / Codigo JS adentro de la etiqueta <script> (tradicionalmente antes del cierre del body) -->
     <!-- <script src="js/main.js"></script> -->
 </body>

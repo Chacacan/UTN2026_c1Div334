@@ -4,6 +4,22 @@
 ### MARTES 26 MAYO RECU 1er PARCIAL
 
 
+## Notas para previa a parcial
+- `JSON.stringify()` y `JSON.parse()`
+- Practicar con almacenamiento persistente
+- Repasamos iteracion en array de objetos, convirtiendo y desconvirtiendo con los metodos de JSON
+
+- Repaso conceptual todo JS
+- SUBIR AL AULA + AVISO -> Ejercicios parecidos para practicar para el parcial
+- Maquetado HTML CSS
+- Mas ejercicios practica!!!!
+- Ejercios extra
+
+- [Clase grabada repaso parcial div 334 11/05/26](https://youtu.be/DeFdzNcf9bs)
+
+---
+
+
 ## JavaScript VI / Manipulacion del DOM en JavaScript y Eventos
 
 ### Que es el DOM? 

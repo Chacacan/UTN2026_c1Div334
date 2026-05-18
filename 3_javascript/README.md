@@ -1,5 +1,1271 @@
 # [JavaScript](https://es.wikipedia.org/wiki/JavaScript)
 
+### LUNES 18 MAYO 1er PARCIAL
+### MARTES 26 MAYO RECU 1er PARCIAL
+
+
+## Notas para previa a parcial
+- `JSON.stringify()` y `JSON.parse()`
+- Practicar con almacenamiento persistente
+- Repasamos iteracion en array de objetos, convirtiendo y desconvirtiendo con los metodos de JSON
+
+- Repaso conceptual todo JS
+- SUBIR AL AULA + AVISO -> Ejercicios parecidos para practicar para el parcial
+- Maquetado HTML CSS
+- Mas ejercicios practica!!!!
+- Ejercios extra
+
+- [Clase grabada repaso parcial div 334 11/05/26](https://youtu.be/DeFdzNcf9bs)
+
+---
+
+
+## JavaScript VI / Manipulacion del DOM en JavaScript y Eventos
+
+### Que es el DOM? 
+El DOM HTML o Document Object Model (**Modelo de Objectos del Documento**), es una interfaz de programacion que reprenseta un documento HTML como una estructura jerarquica de objetos, conocida comunmente como arbol DOM.
+
+Esta estructura (de un documento en el navegador) permite a los programas, especialmente con JS, acceder, modificar añadir o eliminar elementos, contenido, estilos y atributos del documento de forma dinamica.
+
+Cada elemento HTML se convierte en un nodo dentro de este arbol, y todos los elementos estan relacionados entre si mediante padres, hijos y hermanos, creando una **representacion en memoria del documento que el navegador puede manipular**.
+
+**El DOM es la base que permite a JavaScript interactuar con el contenido de una pagina web, transformando el codigo HTML en una estructura de objetos manipulable.**
+
+#### Resumen
+- DOM es una representacion en memoria de la estructura de una pagina web. Transforma el HTML en una estructura de nodos y objetos que puede ser manipulada mediante JS
+- Cada etiqueta HTML es un nodo en el DOM
+- El DOM le permitira a JS modificar el contenido, la estructura y el estilo de una pagina
+
+---
+
+#### Donde está disponible el DOM?
+El **DOM (Document Object Model)** es una interfaz de programación de aplicaciones (API) estandarizada por el W3C que es **independiente del lenguaje**, lo que permite su uso en una amplia variedad de lenguajes de programación.
+
+Los lenguajes más comunes para interactuar con el DOM incluyen:
+
+*   **JavaScript**: Es el lenguaje nativo de los navegadores web y su uso más frecuente para manipular el DOM del lado del cliente.
+*   **Lenguajes del lado del servidor**: Como **Java**, **PHP** o **Python**, que utilizan el DOM para analizar, generar o modificar documentos HTML y XML.
+*   **Otros lenguajes**: También se emplea en **C++**, **VBScript** y otros entornos que requieren interactuar con documentos estructurados.
+
+Aunque el **DOM no forma parte del lenguaje JavaScript** en sí mismo, están íntimamente ligados en el desarrollo web, ya que JavaScript es la herramienta principal para acceder y modificar dinámicamente la estructura y el contenido de las páginas web a través de esta API.
+
+---
+
+#### Ejemplo de estructura DOM
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mi página</title>
+    </head>
+    <body>
+        <h1>Bienvenidos</h1>
+        <p>Este es un párrafo</p>
+    </body>
+</html>
+```
+
+Este HTML sera representado en el DOM como una estructura en forma de arbol. `document` es el objeto que representa toda la pagina web
+
+#### Diagrama del arbol del DOM
+- document
+    - html
+        - head
+            - title
+        - body
+            - h1
+            - p
+
+---
+
+```js
+/*===============================================
+    Como funciona la manipulacion del DOM?
+=================================================
+
+- JavaScript puede acceder y modificar cualquier elemento del DOM utilizando el objeto global document
+
+- JavaScript podra
+    - Modificar el contenido (texto, atributos, clases)
+    - Añadir o eliminar elementos del DOM
+    - Escuchar eventos de usuario (clicks, teclas, ble)
+
+
+===========================================
+    Seleccion de elementos en el DOM
+===========================================
+
+- getElementById()
+    - Este metodo selecciona un unico elemento por su ID (si no lo encuentra, devuelve null)
+    - Solo selecciona el primer elemento que coincida con el ID
+*/
+
+// Guardamos este elemento en una variable
+let titulo = document.getElementById("titulo");
+console.log(titulo); // <h1 id="titulo">Introduccion a JavaScript</h1>
+console.log(titulo.textContent); // Introduccion a JavaScript
+
+
+/* 
+    - querySelector(): Selecciona el PRIMER elemento que coincida con un selector CSS
+
+    - querySelectorAll(): Selecciona TODOS los elementos que coincidan con el selector CSS
+*/
+
+let primerParafo = document.querySelector(".mensaje");
+console.log(primerParafo.textContent); // Primer parrafo
+
+let parrafos = document.querySelectorAll(".mensaje");
+console.log(parrafos);
+
+parrafos.forEach(parrafo => console.log(parrafo.textContent)); 
+// Primer parrafo
+// Segundo parrafo
+
+
+
+/*=========================================
+    Modificar contenido y atributo
+===========================================
+
+Una vez seleccionado un elemento, podemos modificar su contenido, atributos o estilo.
+
+- textContent:      Modifica el texto dentro de un elemento
+- innerHTML:        Modifica el contenido HTML dentro de un elemento
+- setAttribute():   Modifica los atributos de un elemento
+- style:            Permite cambiar el estilo CSS en linea de un elemento
+*/
+
+let parrafo = document.getElementById("parrafo");
+
+// Cambiamos el texto
+parrafo.textContent = "Holi! Soy el nuevo texto desde JavaScript! Wiiiiiiiiiiii";
+
+// Modificamos el contenido HTML (incluye etiquetas)
+parrafo.innerHTML = "<strong>Soy el nuevo texto JS en negrita, holis!</strong>";
+
+// Cambiamos el atributo id del boton
+let boton = document.getElementById("boton");
+
+// Cambiamos el atributo
+boton.setAttribute("id", "nuevoId");
+
+// Cambiamos el estilo
+boton.style.backgroundColor = "purple";
+boton.style.color = "white";
+
+// PRACTICA SUGERIDA (guiño guiño), recorran un array de objetos e imprimanlos en listas, tablas, etc con innerHTML
+
+
+/*=======================
+    Eventos en JS
+=========================
+
+- Los eventos en JS permiten a los desarrolladores detectar interacciones del usuario con la pagina web, como hacer click en un boton, mover el mouse, escribir un campo de texto, etc. Los eventos son clave para que una pagina web sea interactiva
+
+- Un evento es una señal que se envia cuando ocurre una interaccion o cambio en el documento, como un click, o una pulsacion de tecla
+
+- JavaScript permite escuchar estos eventos y ejecutar funciones especificas cuando ocurren
+
+
+=============================
+    Eventos comunes
+=============================
+
+- Eventos de mouse: click, mouseover, mouseout, mousemove
+- Eventos de teclado: keydown, keyup
+- Eventos de formulario: submit, change, input, focus
+- Eventos de ventana: resize, scroll, load, unload
+*/
+
+// add event listener -> añadir escuchador de eventos (creamos un proceso en permanente ejecucion)
+// Escuchamos el evento click
+
+// Opcion 1: Definimos la funcion como parte del segundo parametro del metodo addEventListener
+/*
+boton.addEventListener("click", function() {
+    // alert("jijiji me hace cosquillas");
+    console.log("Era broma, no me hace cosquillas");
+});
+*/
+   
+function mensajeConsola() {
+    console.log("Soy un mensaje desde la consola");
+}
+
+// Opcion 2: Definimos afuera la funcion y la invocamos por su nombre
+boton.addEventListener("click", mensajeConsola);
+
+
+/*=====================
+    Entendiendo event
+=======================
+
+La razon por la cual algunos addEventListener incorporan la palabra clave event tiene que ver con la necesidad de acceder a la informacion de evento que fue disparado
+
+El event es un objeto que contiene TODOS LOS DATOS del evento que ocurrió: que tecla se presiono, coordenadas del mouse, etc
+
+Cuando necesitamos event?
+Solo necesitamos incluir event ennuestra funcion si vamos a usar informacion sobre el event
+*/
+
+// Escuchamos el evento de teclado
+let input = document.getElementById("input");
+
+// En este caso, usamos una funcion flecha (un solo parametro, parentesis opcionales)
+input.addEventListener("keydown", event => {
+    console.log(`Tecla presionada: ${event.key}`); // Imprimimos el caracter o nombre de la tecla presionada
+    console.log(`Codigo de la tecla: ${event.code}`); // Codigo fisico de la tecla (independiente del idioma del teclado)
+});
+
+
+/*=============================
+    Propagacion de eventos
+===============================
+
+Cuando ocurre un evento, este se propaga a traves del DOM en 2 fases
+    
+    - fase de captura (de arriba para abajo)
+    - fase de burbuja (de abajo para arriba)
+
+Podemos evitar la propagacion de un evento usando el metodo event.stopPropagation()
+
+<div id="padre">
+        <button id="hijo">Boton hijo</button>
+    </div>
+*/
+
+let padre = document.getElementById("padre");
+let hijo = document.getElementById("hijo");
+
+padre.addEventListener("click", function() {
+    console.log("Se hizo click ene l div padre"); 
+});
+
+hijo.addEventListener("click", function(event) {
+    event.stopPropagation(); // Evitamos la propagacion
+    console.log("Se hizo click en el elemento hijo")
+});
+```
+
+
+---
+
+
+## JavaScript V / Objetos y objetos globales. Almacenamiento persistente. Iteracion en arrays, objetos y arrays de objetos
+
+- *Clave en ete modulo, intentar cranear como hacer las operaciones de transformacion, filtrado, etc sin usar estos metodos!*
+```js
+/*====================================
+    Objetos globales en JavaScript
+======================================
+1. Objetos globales en el navegador
+2. Que es el objeto console en JavaScript
+3. Por que en JavaScript todo es un objeto
+
+## Que es el entorno de ejecucion? (Explicacion detallada mas abajo)
+Es el lugar donde corre JavaScript! Puede ser tanto en el navegador como en Node.js
+
+
+En JavaScript, los objetos globales son aquellos que estas disponibles en todo el entorno de ejecucion, sin necesidad de importarlos o declararlos explicitamente.
+
+Los objetos globales varian depende del entorno de ejecucion (sea el navegador o Node.js), pero su proposito es facilitar el acceso a ciertas funciones y valores predeterminados.
+
+
+======================================
+    Objetos globales en el navegador 
+======================================
+
+    En el entorno del navegador, los objetos globales incluyen todos los objetos estandar de JavaScript (Array, String, Object), asi como un conjunto de objetos especificos para la interaccion con la pagina web y su entorno.
+    
+    ////////////////
+    // window
+    
+    El objeto global principal en el entorno del navegador es window.
+    Representa toda la ventana del navegador y actua como el contenedor global para todas las variables, funciones y objetos globales en una pagina web.
+    Todos los objetos, variables y funciones definidos en el ambito global estan automaticamente disponibles como propiedades del objeto window.
+
+    Objetos y Metodos importantes del objeto window:
+
+    * document: Representa el DOM de la pagina web actual permitiendo el acceso y la manipulacion de elementos HTML
+        document.getElementById("nombreId");
+    
+    document lo trabajaremos mucho en JavaScript VI
+
+
+    * alert(), prompt(), confirm(): Son metodos que permiten mostrar dialogos al usuario y recoger input
+
+
+    * setTimeout() y setInterval(): Son metodos para programar la ejecucion de codigo despues de un tiempo con setTimeout o en intervalos regulares setInterval
+
+        setTimeout(() => console.log("Holis a los 2 segundos"), 2000);
+
+
+    * location: Proporciona informacion sobre la URL actual de la pagina y permite redireccionar a otras URL
+
+        console.log(window.location.href); // URL actual
+        
+
+    * navigator: Contiene informacion sobre el navegador, como la version, agente de usuario, geolocalizacion, etc
+        console.log(navigator.userAgent); // Info del navegador
+
+
+    * console: Proporciona acceso a la consola del navegador para mostrar mensajes de depuracion
+
+
+
+    ////////////////////////////
+    // Otros objetos globales
+
+    * localStorage y sessionStorage: Permiten almacenar datos en el navegador de manera persistente o temporal
+
+        localStorage.setItem("nombre", "Ari");
+
+    * history: Proporciona acceso al historia de navegacion del navegador
+
+    * XMLHttpRequest: EN DESUSO, reemplazado por fetch() que veremos en JavaScript VII
+        Es un objeto para realizar solicitudes HTTP asincronicas
+
+*/
+
+/*============================================
+    localStorage / sessionStorage
+==============================================
+
+El almacenamiento persistente en JavaScript es una parte fundamental para crear aplicaciones web que puedan recordar info del usuario entre sesiones o durante la navegacion
+
+sessionStorage y localStorage son mecanismos que nos proporciona el navegador para almacenar datos del lado del cliente, pero cada uno tiene un propósito distinto en términos de persistencia, capacidad y ámbito de acceso
+
+
+/////////////////
+// localStorage
+
+localStorage es una API web (Veremos concretamente que son las API web en JS VII) que nos permite almacenar datos de manera persistente en el navegador.
+Los datos almacenados en localStorage no tienen una fecha de expiracion, por loq ue estaran disponibles incluso despues de que el usuario cierre el navegador o apague la compu.
+
+- Tamaño máximo: 5-10 MB por dominio
+- Persistente
+- Accesible solo desde JS (no se envía al servidor)
+
+
+Usos tipicos, almacenar...
+    - Configuraciones de usuario
+    - Temas
+    - Carrito de compras
+
+
+/////////////////
+// sessionStorage
+
+Muy similar a localStorage, pero los datos solo se mantienen disponibles durante la sesion del navegeador.
+Cuando cerramos la pestaña o la ventana del navegador, los datos se eliminan automaticamente
+
+- Tamaño máximo: 5-10 MB por dominio
+- Se borra al cerrar la pestaña
+- Accesible solo desde JS (no se envía al servidor)
+
+
+Usos tipicos, almacenar...
+    - Guardar datos temporales mientras la pestaña está abierta
+    - Información de formularios
+
+
+
+///////////////////////////////////////
+// Metodos de localStorage y sessionStorage
+
+    1. Guardar datos:               localStorage.setItem(key, value)
+    2. Leer datos:                  localStorage.getItem(key)
+    3. Eliminar datos:              localStorage.removeItem(key)
+    4. Eliminamos todos los datos:  localStorage.clear()
+
+
+
+///////////////////////////////////////
+// Cuando no usar local o sessionStorage?
+
+- Nunca para informacion sensible como contraseñas o tokens de autenticacion
+- No son seguras, ya que el contenido es accesible desde cualquier script en la pagina
+*/
+
+// Guardamos un nombre con la clave "nombre"
+sessionStorage.setItem("nombre", "Ari");
+console.log(sessionStorage.getItem("nombre")); // Ari
+
+// Guardamos tema e idioma
+localStorage.setItem("tema", "oscuro");
+localStorage.setItem("idioma", "es");
+
+// Eliminamos el item "nombre"
+localStorage.removeItem("nombre");
+
+// Eliminamos todo
+// localStorage.clear()
+
+
+
+/*==============================================
+    Almacenamiento de datos en JavaScript
+================================================
+
+En JS, almacenar datos implica elegir la estructura adecuada de acuerdo con el tipo de informacion que se quiere guardar y como se desea manipular.
+
+Tipos basicos para almacenar datos en JavaScript
+
+    - Variables simples: Para valores unicos como numeros y strings
+
+    - Objetos: Para representar datos complejos con propiedades
+    
+    - Arrays: Para almacenar una lista de elementos, IDEALMENTE del mismo tipo
+    
+    - Arrays de objetos: Para manejar listas de elementos complejos que contienen multiples propiedades
+
+////////////
+// Objetos
+
+Un objeto en JS es una coleccion de propiedades, donde cada propiedad tiene un nombre clave (key) y un valor.
+
+Los objetos son ideales para representar una unica entidad o elemento que tiene varias propiedades o atributos.
+
+En el siguiente caso, alumno es un objeto que almacena varias propiedades de una persona.
+Usamos este tipo de almacenamiento cuando queremos acceder a atributos especificos de una unica entidad.
+Es muy util para representar conceptos unicos en la aplicacion, como UN usuario, UN producto en particular o UNA configuracion de un sistema.
+
+Cuando usar objetos?
+    - Cuando deseamos representar una entidad UNICA con multiples atributos
+    - Cuando sabemos que no habra multiples instancias o copias de estos datos en la aplicacion
+    - Cuando necesitamos acceder a propiedades especificas mediante sus nombres
+*/
+// Ejemplo de lo contraintuitivo que seria guardar info de este usuario en un array
+let usuario = ["Gaston", 21, "Abogado"];
+
+// Como estructurar la entidad alumno de forma intuitiva y ordenada
+let alumno = {
+    nombre: "Gaston",
+    edad: 21,
+    ocupacion: "Abogado"
+}
+
+/*//////////////////////////
+// Array de objetos 
+
+Almacenamiento de multiples elementos similares con Array de Objetos.
+
+Si necesitamos almacenar varias instancias del mismo tipo de entidad (lista de personas, productos, pedidos, etc) es comun utilizar un array de objetos.
+
+Un array de objetos es una estructura que permite almacenar multiples objetos, donde cada objeto tiene la misma estructura o contiene atributos similares
+
+Cuando usar array de objetos?
+
+    - Cuando necesitamos almacenar MULTIPLES instancias de una misma entidad o estructura de datos
+
+    - Cuando planeamos realizar operaciones sobre una lista de elementos, como iteraciones, filtrados, agrupaciones, ble
+    
+    - Si necesitamos aplicar metodos de los arrays como map, filter, reduce, etc
+
+
+Ejemplos de casos de uso
+
+    - Listado de usuarios registrados en una plataforma
+    - Inventario de productos en una tienda
+    - Historial de transacciones o registros
+*/
+// Gracias al array de objetos, almacenamos multiples elementos, cada uno representando una persona con sus propiedades
+let listaAlumnos = [
+    { nombre: "Gaston", edad: 21, ocupacion: "Avogado" },
+    { nombre: "Daiana", edad: 25, ocupacion: "Costurera" },
+    { nombre: "Matias", edad: 28, ocupacion: "Personal no docente" },
+    { nombre: "Rocio", edad: 32, ocupacion: "Profesora de gallego" },
+    { nombre: "Manuel", edad: 36, ocupacion: "Chef" },
+];
+
+
+/*===============================
+    Cual estructura elegimos?
+=================================
+
+La decision de cual estructura utilizar depende de las necesidades del proyecto y el tipo de manipulacion de datos que deseamos realizar
+
+Usaremos un objeto simple
+    - Si solo tenemos una entidad (configuracion de usuario)
+    - Un unico elemento que contiene datos con varias propiedades
+    - Acceder a propiedades individuales de un objeto es rapido y sencillo
+
+
+Usaremos un array simple
+    - Para una lista ordenada de elementos individuales (lista de nombres o identificadores), donde cada elemento no require atributos adicionales
+    - En este caso un array simple (de valores primitivos) es suficiente
+
+
+Usaremos un array de objetos
+    - Cuando tenemos una lista de enetidades complejas, cada una con multiples propiedades
+    - Esta configuracion permite realizar operaciones en lote y mantener una coleccion de elementos de forma organizada
+*/
+
+
+
+/*========================================================
+    Iteracion en arrays, objetos y arrays de objetos
+==========================================================
+
+/////////////////////
+// Metodos clasicos (ES5 y anteriores)
+
+////////////////
+// for clasico
+
+    for (let i = 0; i < array.length; i++) {
+        console.log(array[i]);
+    }
+
+- Ventajas: Maximo control, podemos usar break y continue
+- Desventajas: Mas verboso, propenso a errores de off-by-one
+*/
+
+// Ejemplo 1: Sumar elementos
+const numeros = [1, 2, 3, 4, 5];
+let suma = 0;
+
+for (let i = 0; i < numeros.length; i++) {
+    suma += numeros[i];
+}
+
+console.log(suma);
+
+// Ejemplo 2: Buscar elemento
+const frutas = ["manzana", "banana", "naranja"];
+let frutaEncontrada;
+
+for (let i = 0; i < frutas.length; i++) {
+    if (frutas[i].startsWith("ban")) {
+        frutaEncontrada = frutas[i];
+        break;
+    }
+}
+
+console.log(frutaEncontrada);
+
+
+// Ejemplo 3: Filtrar objetos
+const productos = [
+    { id: 1, nombre: "Laptop", precio: 500000 },
+    { id: 2, nombre: "Mouse", precio: 20000 },
+    { id: 3, nombre: "Teclado", precio: 40000 },
+];
+
+const productosCaros = [];
+
+for (let i = 0; i < productos.length; i++) {
+    if (productos[i].precio > 30000) {
+        productosCaros.push(productos[i]);
+    }
+}
+
+console.log(productosCaros);
+
+
+/*//////////////
+// forEach()
+
+    array.forEach((elemento, indice, arrayOriginal) => {
+        console.log(elemento, indice)
+    })
+
+- Ventajas: Sintaxis limpia, no necesitamos contador
+- Desventajas: No podemos romper el bucle (no break)
+*/
+
+// Ejemplo 1: Imprimir elementos
+frutas.forEach(fruta => console.log(fruta));
+
+// Imprimimos elemento e indice
+frutas.forEach( (fruta, indice) => {
+    console.log(`Indice: ${indice} / Fruta: ${fruta}`)
+});
+
+
+// Ejemplo 2: Modificar array externo
+const arrayNums = [1, 2, 3];
+const arrayDobles = [];
+
+arrayNums.forEach(num => arrayDobles.push(num * 2));
+console.log(arrayDobles); // [2, 4, 6]
+
+
+// Ejemplo 3: Actualizar propiedades
+const estudiantes = [
+    { nombre: "Nicolas", nota: 6 },
+    { nombre: "Daira", nota: 7 },
+    { nombre: "Juan", nota: 4 },
+    { nombre: "Gabriel", nota: 10 },
+    { nombre: "Gaston", nota: 8 },
+];
+
+// llamamos estudiante a cada elemento de la iteracion
+estudiantes.forEach(estudiante => {
+    estudiante.aprobado = estudiante.nota > 6;
+});
+
+console.log(estudiantes);
+
+
+
+/*////////////////////
+// Metodos funcionales (ES5+)
+
+///////////////
+// map()
+
+    const nuevosValores = array.map(elemento => elemento * 2);
+
+- Proposito: Transformar cada elemento
+- Retorna: Nuevo array con los resultados
+*/
+
+// Ejemplo 1: Crear array de cuadrados
+// const arrayNums = [1, 2, 3];
+
+// Directamente escribimos el nuevo array en el que vamos a guardar los nuevos valores
+const cuadrados = arrayNums.map(num => num * num);
+console.log(cuadrados); // [1, 4, 9]
+
+
+// Ejemplo 2: Convertir a string
+const edades = [48, 35, 20, 27];
+const edadesString = edades.map(edad => `Tengo ${edad} años`);
+console.log(edadesString); // ['Tengo 48 años', 'Tengo 35 años', 'Tengo 20 años', 'Tengo 27 años']
+
+
+/* Ejemplo 3: Extraer propiedades
+
+const estudiantes = [
+    { nombre: "Nicolas", nota: 6 },
+    { nombre: "Daira", nota: 7 },
+    { nombre: "Juan", nota: 4 },
+    { nombre: "Gabriel", nota: 10 },
+    { nombre: "Gaston", nota: 8 },
+];
+*/
+const nombresEstudiantes = estudiantes.map(estudiante => estudiante.nombre);
+console.log(nombresEstudiantes); // ['Nicolas', 'Daira', 'Juan', 'Gabriel', 'Gaston']
+
+
+/*//////////////
+// filter()
+
+    const filtrados = array.filter(elemento => elemento > 10);
+
+- Proposito: Seleccionar elementos que cumplan una condicion
+- Retorna: Nuevo array con los elementos filtrados
+*/
+
+// Ejemplo 1: Filtrar numeros pares
+const nums = [1, 2, 3, 4, 5, 6];
+const numsPares = nums.filter(numero => numero % 2 === 0);
+console.log(numsPares); // [2, 4, 6]
+
+
+// Ejemplo 2: Filtrar strings largos (mayores a 4 caracteres)
+const palabras = ["hola", "adios", "bienvenido", "oki"];
+const palabrasLargas = palabras.filter(palabra => palabra.length > 4);
+console.log(palabrasLargas); // ['adios', 'bienvenido']
+
+
+/* Ejemplo 3: Filtrar por propiedad / Alumnos +30
+let listaAlumnos = [
+    { nombre: "Gaston", edad: 21, ocupacion: "Avogado" },
+    { nombre: "Daiana", edad: 25, ocupacion: "Costurera" },
+    { nombre: "Matias", edad: 28, ocupacion: "Personal no docente" },
+    { nombre: "Rocio", edad: 32, ocupacion: "Profesora de gallego" },
+    { nombre: "Manuel", edad: 36, ocupacion: "Chef" },
+];
+*/
+
+const alumnosVHS = listaAlumnos.filter(alumno => alumno.edad >= 30);
+console.log(alumnosVHS);
+
+
+// Ejemplo 4: Filtrar multiples condiciones
+const ordenes = [
+    { id: 1, nombre: "Laptop", precio: 500000, cantidad: 1, completada: true },
+    { id: 2, nombre: "Mouse", precio: 20000, cantidad: 3, completada: false },
+    { id: 3, nombre: "Teclado", precio: 30000, cantidad: 2, completada: true },
+    { id: 4, nombre: "Monitor", precio: 100000, cantidad: 4, completada: false },
+    { id: 5, nombre: "RAM", precio: 150000, cantidad: 3, completada: true },
+];
+
+// Queremos filtrar las ordenes que esten completadas y sean mayores a 1 unidad
+
+// NO necesariamente tenemos que escribir arrow functions, como podemos ver, podemos declarar una funcion adentro del filter. Las funciones flecha nos resultan mas comodas porque nos permiten hacerlas single line y por tanto prescindir de {} y return
+
+const ordenesFiltradas1 = ordenes.filter(function(orden) {
+    return orden.completada && orden.cantidad > 1
+});
+console.log(ordenesFiltradas1);
+
+// Ejemplo con arrow function
+const ordenesFiltradas2 = ordenes.filter(orden => orden.completada && orden.cantidad > 1);
+console.log(ordenesFiltradas2);
+
+
+
+/*//////////////
+// find() y findIndex()
+
+    const encontrado = array.find(elemento => elemento.id === 123);
+    const indice = array.findIndex(elemento => elemento.id === 123);
+
+- Proposito: Buscar el primer elemento que cumpla una condicion
+- Retorna: Retorna el elemento find() o el indice findIndex()
+- Si no lo encuentra puede devolver undefined o -1
+*/
+
+// Ejemplo 1: Buscar numero > 10
+const numerosRandom = [5, 12, 8, 130, 44];
+const numeroEncontrado = numerosRandom.find(numero => numero > 10);
+console.log(numeroEncontrado); // 12
+
+// Ejemplo 2: Buscar indice del primer elemento > 100
+const numeroMas100 = numerosRandom.findIndex(numero => numero > 100);
+console.log(numeroMas100); // 3
+
+// Ejemplo 3: Buscar alumnos activos
+let usuariosConectados = [
+    { nombre: "Gaston", edad: 21, ocupacion: "Avogado", activo: true },
+    { nombre: "Daiana", edad: 25, ocupacion: "Costurera", activo: false },
+    { nombre: "Matias", edad: 28, ocupacion: "Personal no docente", activo: true },
+    { nombre: "Rocio", edad: 32, ocupacion: "Profesora de gallego", activo: false },
+    { nombre: "Manuel", edad: 36, ocupacion: "Chef", activo: true },
+];
+
+const usuarioActivo = usuariosConectados.find(usuario => usuario.activo);
+console.log(usuarioActivo); // {nombre: 'Gaston', edad: 21, ocupacion: 'Avogado', activo: true}
+
+
+
+/*//////////////
+// reduce()
+
+    const suma = array.reduce((acumulador, elemento) => acumulador + elemento, 0)
+
+- Proposito: Reduce el array a un unico valor
+- Retorna: Retorna el valor acumulado
+*/
+
+// Ejemplo 1: Sumar elementos
+const decenas = [10, 20, 30];
+const resultadoDecenas = decenas.reduce((acumulador, numero) => acumulador + numero, 0);
+console.log(resultadoDecenas); // 60
+
+/*
+    - El 0 al final es el valor inicial del acumulador
+    - Sin valor inicial, tomaria el primer elemento como acumulador inicial
+*/
+
+
+// Ejemplo 2: Sumar propiedades, sumaremos el valor de las ventas (cantidad x precio)
+const ventas = [
+    { producto: "Camisa", cantidad: 3, precio: 25 },
+    { producto: "Zapatos", cantidad: 2, precio: 40 },
+    { producto: "Pantalon", cantidad: 1, precio: 80 },
+];
+
+// Si no indicamos el valor inicial acá, hará una concatenación errónea [object Object]8080 
+// El 0 nos permite entender cual va a ser el valor y el TIPO inicial del acumulador
+
+// Opcion 1: Funcion flecha en una sola linea, tal vez un poco complicada y larga de leer
+//const acumuladoVentas = ventas.reduce((acumulador, p) => acumulador + (p.cantidad * p.precio), 0);
+
+// Opcion 2: La misma funcion flecha pero con {} y return para separar mas la logica y facilitar la lectura
+const acumuladoVentas = ventas.reduce((acumulador, p) => {
+    return acumulador + (p.cantidad * p.precio)
+}, 0);
+console.log(acumuladoVentas);
+
+
+
+/*///////////////////
+// Metodos modernos (ES6+)
+
+///////////////
+// for...of
+
+    for (const elemento of array) {
+        console.log(elemento);
+
+        if (elemento === "stop") break; // Podemos usar break!
+    }
+
+- Ventaja: Sintaxis limpia y permite break/continue
+- Desventajas: No provee indice automatico
+*/
+
+// Ejemplo 1: Iterando con posibilidad de break
+const simbolos = ["€", "$", "¥", "£"];
+
+for (const simbolo of simbolos) {
+    // Ejemplo de que podemos prescindir de las {} en una sola instruccion. NO recomendado!
+    if (simbolo === "¥") break; 
+    console.log(simbolo);
+}
+
+// Ejemplo 2: Iterar objetos, buscaremos (al primer) empleado que gane > 3500
+const empleados = [
+    { nombre: "Santiago", salario: 3000 },
+    { nombre: "Nicolas", salario: 3500 },
+    { nombre: "Juan", salario: 4000 },
+    { nombre: "Juansen", salario: 4500 },
+    { nombre: "Nahuel", salario: 2000 },
+];
+
+for (const empleado of empleados) {
+    if (empleado.salario > 3500) {
+        console.log(`${empleado.nombre} gana mas de 3500`);
+        break;
+    }
+}
+
+
+/*///////////////////
+// Metodos de comprobacion
+ 
+    some()
+    every()
+
+    const algunoCumple = array.some(elemento => elemento > 0);
+    const todosCumplen = array.every(elemento => elemento > 0);
+
+- Proposito: Verificar si alguno/todos cumplen una condicion
+- Retorna: Booleano
+*/
+
+// some()
+// Ejemplo 1: Verificar si hay numeros pares
+const listaNumeros = [1, 3, 5, 7, 8];
+const hayPares = listaNumeros.some(num => num % 2 === 0);
+console.log(hayPares); // true
+
+// Ejemplo 2: Verificar si hay usuarios admin
+const usuariosForo = [
+    { nombre: "Xoana", rol: "user" },
+    { nombre: "Uxia", rol: "admin" },
+    { nombre: "Rixela", rol: "user" },
+];
+
+const hayAdmin = usuariosForo.some(user => user.rol === "admin");
+console.log(hayAdmin); // true
+
+
+// every()
+// Ejemplo 1: verificar si todos son positivos
+const todosPositivos = listaNumeros.every(num => num > 0);
+console.log(todosPositivos); // true
+
+
+/* Ejemplo 2: Verificar si todos sacaron > 7
+    const estudiantes = [
+        { nombre: "Nicolas", nota: 6 },
+        { nombre: "Daira", nota: 7 },
+        { nombre: "Juan", nota: 4 },
+        { nombre: "Gabriel", nota: 10 },
+        { nombre: "Gaston", nota: 8 },
+    ];
+*/
+const todosNotables = estudiantes.every(estudiante => estudiante.nota > 7);
+console.log(todosNotables); // false
+
+
+/*===============================  
+    Comparacion de rendimiento
+=================================
+
+1. Bucles clasicos: (for, while) son los mas rapidos para iteraciones simples
+2. Metodos funcionales: (map, filter, etc) son mas lentos pero mas expresivos
+3. for...of ofrece un buen equilibrioo entre rendimiento y legibilidad
+
+
+============================
+    Recomendaciones
+============================
+
+- Transformar array:        map()
+- Filtrar elementos:        filter()
+- Reducir a 1 valor:        reduce()
+- Buscar elemento:          find() y findIndex()
+- Iterar:                   forEach() o for...of
+- Iterar break/continue:    for o for...of
+- Verificar condiciones:    some() y every()
+*/
+
+
+/*===========================
+    Iteracion en Objetos
+=============================
+
+    for...in
+    entries()
+    keys()
+    values()
+
+Objetos como una coleccion de pares clave valor
+Estos metodos nos permiten acceder a propiedades y modificar valores
+*/
+
+// for...in para iterar claves
+const estudiante = { nombre: "Francisco", edad: 36, curso: "Progra III" };
+
+for (const propiedad in estudiante) {
+    console.log(`${propiedad}: ${estudiante[propiedad]}`)
+}
+
+// Object.keys() para obtener claves
+const claves = Object.keys(estudiante);
+console.log(claves); // ['nombre', 'edad', 'curso']
+
+claves.forEach(clave => console.log(clave));
+
+
+// Object.values() para obtener valores
+const valores = Object.values(estudiante);
+console.log(valores);
+
+
+// Object.entries() para obtener pares clave-valor
+for (const [clave, valor] of Object.entries(estudiante)) {
+    console.log(`${clave}: ${valor}`);
+}
+```
+
+
+
+---
+
+
+### *Como ejecuta las instrucciones JavaScript internamente?*
+**JavaScript internamente “lee” el código antes de ejecutarlo**, realizando un proceso en dos fases:
+
+**1. Fase de compilación** (o creación del contexto)
+
+Antes de ejecutar línea por línea, el motor de JavaScript analiza todo el código. En esta etapa:
+
+- Registra variables y funciones.
+- Determina el alcance (scope).
+- Prepara el entorno de ejecución.
+
+**2. Fase de ejecución**
+
+Recién después ejecuta el código en orden.
+
+
+---
+
+
+### Por que en JavaScript todo es un objeto?
+En JavaScript, **tanto los objetos como las funciones** se tratan como "ciudadanos de primera clase", lo que significa que **pueden ser asignados a variables pasados como argumentos y ser retornados por otras funciones**.
+
+Aunque no todos los tipos de datos en JS son objetos, muchos tipos de datos tienen comportamiento de objeto o estan envueltos en un objeto:
+
+1. *Datos primitivos*: strings, numeros, booleanos null y undefined. Strings y numeros son "envolturas" de objetos.
+
+2. *Funciones*: En JavaScript las funciones son en realidad objetos de tipo `Function`. Lo que permite asignarlas a variables o pasarlas como argumentos.
+
+3. *Arrays*: Los arrays son tambien objetos en JavaScript, pero un tipo particular de objeto. Un objeto que organiza sus datos mediante indices numerados.
+
+4. *Objetos globales*: Todo el entorno de ejecucion esta basado en objeto globales. `window` en el navegador o `global` en Node.js.
+
+
+---
+
+
+### Que es el entorno de ejecucion en JavaScript?
+**El entorno de ejecución en JavaScript** es el conjunto de mecanismos que permiten la ejecución del código, compuesto por un motor (que incluye el compilador y el motor de ejecución), un bucle de eventos, timers y librerías de APIs específicas del entorno. Los entornos más comunes son el **navegador web** (cliente) y **Node.js** (servidor), aunque existen alternativas como **Deno** o **Bun**.
+
+### Componentes y Tipos de Entorno
+*   **Motor de JavaScript**: Responsable de analizar, compilar y ejecutar el código. En navegadores se usan motores como V8 (Chrome), SpiderMonkey (Firefox) o JavaScriptCore (Safari); en Node.js se utiliza V8.
+*   **Navegador Web**: Ofrece APIs del DOM y del navegador (como `document` o `window`). El código se ejecuta dentro de pestañas independientes para garantizar la seguridad.
+*   **Node.js**: Permite ejecutar JavaScript fuera del navegador, utilizando el sistema operativo y APIs de servidor. El objeto global es `global` (equivalente a `window` en el navegador).
+*   **Compatibilidad**: Si el código no depende de APIs específicas del navegador o del sistema operativo, puede ejecutarse indistintamente en ambos entornos.
+
+---
+
+### Contexto de Ejecución
+Dentro de este entorno, el código se gestiona mediante el **Contexto de Ejecución** (Execution Context), que define el entorno léxico, las variables disponibles y el valor de `this`.
+
+1.  **Contexto Global**: Se crea al iniciar el script. Contiene variables y funciones declaradas fuera de bloques.
+2.  **Contexto de Función**: Se crea cada vez que se invoca una función, permitiendo el aislamiento de variables locales.
+3.  **Fases**: Cada contexto pasa por una **fase de creación** (donde ocurre el *hoisting* y se establecen los ámbitos) y una **fase de ejecución** (donde el código se procesa línea por línea).
+
+La gestión de estos contextos se realiza mediante una **pila de ejecución** (call stack), una estructura LIFO que determina el orden en que se ejecutan las funciones, asegurando que solo una operación se procese a la vez en el hilo principal.
+
+
+---
+
+
+## JavaScript IV / Introduccion a arrays, metodos de strings y arrays
+```js
+/*===========================
+    Arrays y Objetos en JS
+=============================
+
+En JavaScript, los arrays y objetos son estructuras de datos fnudamentales.
+    - Los arrays se utilizan para almacenar una lista ordenada de elementos
+    - Los objetos son ideales para almacenar datos con propiedades clave-valor
+
+
+///////////////
+// Comparacion
+
+Uso principal:
+    - Array: Lista ordenada de elementos
+    - Objeto: Coleccion de pares clave-valor
+
+Acceso a datos:
+    - Array: Por indice         ->  array[0]
+    - Objeto: 
+        Notacion de punto       -> objeto.propiedad
+        Notacion de corchete    -> objeto["propiedad"]
+
+Metodos:
+    - Array: push(), pop(), map(), forEach()
+    - Objeto: Metodos personalizados y funciones
+
+Iteracion:
+    - Array: forEach, map, bucles, etc
+    - Objeto: for...in, Object.keys(), Object.values()
+
+
+=====================
+    Arrays en JS
+=====================
+
+Un array es una lista ORDENADA de elementos, donde cada uno tiene una posicion o indice.
+
+Los arrays en JavaScript son muy flexibles: pueden contener cualquier tipo de dato (y los elementos no tienen que ser del mismo tipo)
+    - numeros
+    - strings
+    - booleanos
+    - otros arrays
+    - objetos
+    - funciones
+    - etc
+*/
+
+let colores = ["rojo", "azul", "verde", "amarillo"];
+
+// Los elementos en un array tienen indices que comienzan en 0
+console.log(colores[1]); // azul
+console.log(colores[3]); // amarillo
+
+
+/*===================
+    Objetos en JS
+=====================
+
+Un objeto en JavaScript es una coleccion de pares clave-valor.
+Las claves son strings que identifican a cada valor, lo cual nos permite un acceso rapido y estructurado a los datos.
+
+Los objetos son utiles cuando queremos representar una entidad con multiples propiedades
+
+Accedemos a las propiedades de un objeto
+    - Notacion de punto
+    - Notacion de corches
+*/
+
+// Creacion literal de objeto
+let persona = {
+    nombre: "Estefano",
+    edad: 25,
+    ciudad: "Lanus"
+};
+
+
+// Notacion de punto
+console.log(persona.nombre);
+
+// Notacion de corchetes
+console.log(persona["ciudad"]);
+
+// Los objetos tambien pueden tener metodos, que son funciones almacenadas en una propiedad
+let gato = {
+    nombre: "Merlin",
+    maullar: function(){ 
+        console.log("Miau!");
+    }
+}
+
+gato.maullar();
+
+
+// Agregar una propiedad
+persona.pais = "Argentina";
+console.log(persona);
+
+
+// Eliminar una propiedad
+delete persona.edad;
+console.log(persona);
+
+
+
+/*=============================
+    Metodos de strings en JS
+===============================
+
+Los strings en JavaScript son tipos de datos primitivos, PERO JavaScript los "envuelve" o trata como si fueran objetos -> Object Wrappers o envolvedores de objetos
+
+JavaScript, al tratarlos como objetos, les proporciona metodos. A esto nos referimos con los object wrappers */
+
+
+// 1. length: Devuelve la longitud del string
+console.log("Hola".length); // 4
+
+
+// 2. charAt(index): Devuelve el caracter en la posicion especificada
+console.log("Hola".charAt(1)); // o
+
+
+// 3. concat(string1, string2): Concatena strings
+console.log("Hola".concat(" ", "mundo!")); // Hola mundo!
+
+
+// 4. includes(substring): Devuelve true si el substring esta en el string
+console.log("JavaScript".includes("Script")); // true -> es case sensitive
+
+
+// 5. startsWith(substring): Comprueba si el string COMIENZA con el substring
+
+
+// 6. endsWith(substring): Comprueba si el string TERMINA con el substring
+
+
+// 7. indexOf(substring): Devuelve el indice de la PRIMERA aparicion del substring
+console.log("banana".indexOf("a")); // 1
+
+
+// 8. lastIndexOf(substring): Devuelve el indice de la ULTIMA aparicion del substring
+console.log("banana".lastIndexOf("a")); // 5
+
+
+// 9. replace(searchValue, newValue): Reemplaza una parte del string
+console.log("Hola mundo".replace("mundo", "Div 334!")); // Hola Div 334!
+
+
+// 10. replaceAll(searchValue, newValue): Reemplaza TODAS las apariciones del string
+console.log("1,2,3".replaceAll(",", ";")); // 1;2;3
+
+
+// 11. toLowerCase(): Convierte a minusculas
+console.log("JAVASCRIPT".toLowerCase()); // javascript
+
+
+// 12. toUpperCase(): Convierte a mayusculas
+console.log("hola".toUpperCase()); // HOLA
+
+
+// 13. trim(): Elimina espacios en blanco al inicio y al final
+console.log("     hola  ".trim()); // hola
+
+
+// 14. trimStart(): Elimina espacios al inicio
+
+
+// 15. trimEnd(): Elimina espacios al final
+
+
+// 16. slice(start, end): Extrae parte del string
+console.log("JavaScript".slice(0, 4)); // Java (el caracter 4 no se incluye)
+console.log("JavaScript".slice(-2)); // pt
+
+
+// 17. substring(start, end): Similar a slice, pero NO acepta negativos
+console.log("JavaScript".substring(4, 10)); // Script
+
+
+// 18. split(separator): Divide el string en un array
+console.log("rojo,verde,azul".split(",")); // ["rojo","verde","azul"]
+
+
+// 19. repeat(count): Repite el string
+console.log("ji".repeat(3));
+
+
+// 20. match(regex): Devuelve coincidencias con una expresion regular (REGEX o Regular Expression)
+console.log("abc123".match(/\d+/)); // ["123"]
+
+
+
+/*=============================
+    Metodos de array en JS
+===============================
+Los metodos que nos provee JavaScript nos permiten modificar, recorrer, filtrar y trasformar arrays
+*/
+let arr = [1, 2];
+
+// 1. length: Devuelve la longitud del array
+console.log(arr.length); // 2
+
+//////////////////////////////
+// Operar al final del array
+
+// 2. push(element): Agrega un elemento AL FINAL del array
+arr.push(3);
+console.log(arr); // [1, 2, 3]
+
+
+// 3. pop(): Elimina el ULTIMO elemento y lo devuelve
+console.log(arr.pop()); // 3
+console.log(arr); // [1, 2]
+
+
+//////////////////////////////////
+// Operar al principio del array
+
+// 4. unshift(element): Agrega un elemento AL PRINCIPIO del array
+arr.unshift(0); 
+console.log(arr); // [0, 1, 2]
+
+// 5. shift(): Elimina el PRIMER elemento y lo devuelve
+console.log(arr.shift()); // 0
+console.log(arr); // [1, 2]
+
+
+// 6. concat(array): Concatena arrays
+console.log([1, 2].concat([3, 4])); // [1, 2, 3, 4]
+
+
+// 7. join(separator): Une los elementos en un string
+console.log([1, 2, 3].join(" ")); // 1 2 3
+console.log([1, 2, 3].join(",")); // 1,2,3
+
+
+// 8. slice(start, end): Extrae una copia parcial del array
+console.log([1, 2, 3, 4].slice(1, 3)); // [2, 3] (la posicion 3 no se incluye)
+
+
+// 9. splice(start, deleteCount, ...items): modifica el array in situ. Puede borrar y agregar
+let nuevoArr = [1, 2, 3];
+// En la posicion 1, modificamos 1 caracter, lo reemplazamos por "a"
+nuevoArr.splice(1, 1, "a");
+console.log(nuevoArr); // [1, "a", 3]
+
+
+// 10. indexOf(element): Devuelve la PRIMERA POSICION del elemento (si no existe, devuelve -1)
+console.log([1, 2, 3].indexOf(2)); // 1
+
+
+// 11. lastIndexOf(element): Devuelve la ULTIMA posicion en el array
+
+
+// 12. includes(element): Devuelve true si el elemento existe
+console.log([1, 2, 3].includes(2)); // true
+
+
+// Proximos metodos en JavaScript V
+```
+
+
+---
+
 
 ## JavaScript III / Scope y ambito, funciones, tipos de funciones
 ```js
@@ -417,7 +1683,10 @@ console.log(saludarPersona("Ari"));
 // Flecha 5: Muy populares en las funciones de orden superior y callbacks
 ```
 
+
 ---
+
+
 
 ## JavaScript II / Control de Flujo, Estructuras de Control, Condicionales y Bucles I
 

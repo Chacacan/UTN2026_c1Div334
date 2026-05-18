@@ -1,412 +1,335 @@
-/*======================
-    Scope o Ambito
-========================
+/*===============================================
+    Como funciona la manipulacion del DOM?
+=================================================
 
-El scope o ambito en JS se refiere al contexto en el cual las variables y las funciones son accesibles y pueden ser referenciadas.
-Hay distintos tipos de scope:
+- JavaScript puede acceder y modificar cualquier elemento del DOM utilizando el objeto global document
 
-1. Global scope o Ambito global
-    - Las variables declaradas fuera de cualquier funcion o bloque tienen alcance global y son accesibles desde cualquier parte del codigo
-    - Con var, en un navegador, las variables globales se adjuntan al objeto window
-
-
-2. Local scope / Function scope o Ambito local o ambito de funcion (var)
-    - Las variables declaradas dentro de una fucnion solo son accesibles dentro de esa funcion. Estas variables tienen un ambito local
-
-3. Block scope o Ambito de bloque
-    - A partir de ES6 (2015), las variables declaradas con let y const tienen alcance de bloque, lo que significa que solo son accesibles dentro del bloque en que se declararon -> dentro de las llaves {}, de un if, de un for, etc
-*/
-
-/*========================
-    Variables globales
-========================*/
-let letGlobal = "Holis, soy una let accesible";
-const constGlobal = "Yo tambien!";
-
-// 1. Ejemplo ambito global
-var globalVar = "Soy global";
-
-function mostrarGlobal() {
-    console.log(globalVar);
-}
-
-mostrarGlobal();
-console.log(globalVar);
-
-
-// 2. Ejemplo ambito de funcion
-function mostrarLocal() {
-    var localVar = "Soy local";
-    console.log(localVar);
-}
-
-mostrarLocal(); // imprime correctamente el mensaje
-// console.log(localVar); // Nos muestra un error
-
-
-// 3. Ejemplo de ambito de bloque
-if(true) {
-    let bloqueLet = "Soy de bloque";
-    console.log(bloqueLet);
-}
-
-// console.log(bloqueLet); // Error, bloqueLet no esta definida
-
-
-/*========================================
-     Scope chain o cadena de ambito
-     =====================================
-
-Cuando intentamos acceder a una variable, JavaScript busca en la cadena de ambito, comenzando por el ambito mas interno y moviendose hacia los ambitos externos hasta encontrar la variable o llegar al ambito global */
-
-var globalVar2 = "Soy una var global";
-
-function externa() {
-    var externaVar2 = "Soy de externa";
-
-    function interna() {
-        var internaVar2 = "Soy de interna";
-        console.log(globalVar2);    // "Soy una var global"
-        console.log(externaVar2);   // "Soy de externa"
-        console.log(internaVar2);   // "Soy de interna"
-    }
-
-    interna();
-    // console.log(internaVar2);       // Error: internaVar2 no esta definida
-}
-
-externa();
-
-
-/*========================================
-     Ambito de funcion vs Ambito de bloque
-     =====================================
-
-Function Scope: Las variables declaradas con VAR tienen ambito de funcion.
-Esto significa que si se declararn dentro de una funcion, no son accesibles fuera de esa funcion, pero no estan limitadas por bloques 
-
-Block Scope: Las variables declaradas con let y vconst estan limitadas por el bloque {} en el que se declaran
-*/
-
-// Ejemplo function scope
-function scopeFunction() {
-    if (true) {
-        var funcionVar3 = "Soy de funcion";
-    }
-
-    console.log(funcionVar3); // "soy de funcion"
-}
-
-scopeFunction();
-
-
-
-// Ejemplo block scope
-function blockScope() {
-    if (true) {
-        let bloqueLet3 = "Soy de bloque";
-        const bloqueConst3 = "Tambien soy de bloque"
-    }
-
-    // console.log(bloqueLet3); // Error bloqueLet3 is not defined
-    // console.log(bloqueConst3); // Error bloqueConst3 is not defined
-
-    console.log(letGlobal);
-    console.log(constGlobal);
-}
-
-blockScope();
-
-
-/*==========================
-    Hoisting o Elevacion
-============================
-
-Las variables y funciones en JavaScript se mueven "hacia arriba" de su contexto de ejecucion (scope o alcance). */
-
-// Variables con var: Se elevan y se inicializan con undefined
-console.log(elevadaVar);        // undefined
-var elevadaVar = "Soy elevada!";
-console.log(elevadaVar);        // "Soy elevada!"
-
-
-// Variables con let y const: Se elevan pero no se inicializan, lo que lleva a un error si se accede antes de la declaracion
-// console.log(elevadaLet); // Uncaught ReferenceError: Cannot access 'elevadaLet' before initialization
-let elevadaLet = "Soy una let elevada!";
-console.log(elevadaLet);
-
-
-
-/*================================
-    Comparacion var, let y const
-==================================
-
-    - var:      Tiene ambito de FUNCION y permite la redeclaracion y la reasignacion
-
-    - let:      Tiene ambito de BLOQUE y no permite la redeclaracion, pero si la reasignacion
-
-    - const:    Tiene ambito de BLOQUE y prohibe la redeclacion y la reasignacion
-
-
-- let y const se introdujeron en el estandar ES6 (2015) para mejorar el ambito de las variables y reducir la probabilidad de anulaciones accidentales de variables
-
-- tanto let como const no permiten la elevacion, mientras que var si
-
-- const asegura que el valor de la variable permanece constante, mientras que let permite la reasignacion. Aunque OJO, objetos y arrays si pueden modificarse
+- JavaScript podra
+    - Modificar el contenido (texto, atributos, clases)
+    - Añadir o eliminar elementos del DOM
+    - Escuchar eventos de usuario (clicks, teclas, ble)
 
 
 ===========================================
-    Resumen comparacion de variables
+    Seleccion de elementos en el DOM
 ===========================================
 
-var:
-    - Ambito global o ambito de funcion
-    - Puede ser redeclarado y reasignado
-    - Tiene elevacion a nivel de funcion, por lo que puede utilizarse antes de la declaracion
+- getElementById()
+    - Este metodo selecciona un unico elemento por su ID (si no lo encuentra, devuelve null)
+    - Solo selecciona el primer elemento que coincida con el ID
+*/
 
-let:
-    - Ambito global o de bloque {}
-    - Se puede volver a reasignar, pero no a redeclarar
-    - Tiene elevacion a nivel de bloque, por lo que no es accesible antes de la declaracion
-
-const:
-    - Ambito global o de bloque {}
-    - No se puede volver a declarar ni reasignar
-    - Tiene elevacion a nivel de bloque, por lo que no es accesible antes de la declaracion
+// Guardamos este elemento en una variable
+let titulo = document.getElementById("titulo");
+console.log(titulo); // <h1 id="titulo">Introduccion a JavaScript</h1>
+console.log(titulo.textContent); // Introduccion a JavaScript
 
 
+/* 
+    - querySelector(): Selecciona el PRIMER elemento que coincida con un selector CSS
+
+    - querySelectorAll(): Selecciona TODOS los elementos que coincidan con el selector CSS
+*/
+
+let primerParafo = document.querySelector(".mensaje");
+console.log(primerParafo.textContent); // Primer parrafo
+
+let parrafos = document.querySelectorAll(".mensaje");
+console.log(parrafos);
+
+parrafos.forEach(parrafo => console.log(parrafo.textContent)); 
+// Primer parrafo
+// Segundo parrafo
+
+
+
+/*=========================================
+    Modificar contenido y atributo
+===========================================
+
+Una vez seleccionado un elemento, podemos modificar su contenido, atributos o estilo.
+
+- textContent:      Modifica el texto dentro de un elemento
+- innerHTML:        Modifica el contenido HTML dentro de un elemento
+- setAttribute():   Modifica los atributos de un elemento
+- style:            Permite cambiar el estilo CSS en linea de un elemento
+*/
+
+let parrafo = document.getElementById("parrafo");
+
+// Cambiamos el texto
+parrafo.textContent = "Holi! Soy el nuevo texto desde JavaScript! Wiiiiiiiiiiii";
+
+// Modificamos el contenido HTML (incluye etiquetas)
+parrafo.innerHTML = "<strong>Soy el nuevo texto JS en negrita, holis!</strong>";
+
+// Cambiamos el atributo id del boton
+let boton = document.getElementById("boton");
+
+// Cambiamos el atributo
+boton.setAttribute("id", "nuevoId");
+
+// Cambiamos el estilo
+boton.style.backgroundColor = "purple";
+boton.style.color = "white";
+
+// PRACTICA SUGERIDA (guiño guiño), recorran un array de objetos e imprimanlos en listas, tablas, etc con innerHTML
+
+
+/*=======================
+    Eventos en JS
+=========================
+
+- Los eventos en JS permiten a los desarrolladores detectar interacciones del usuario con la pagina web, como hacer click en un boton, mover el mouse, escribir un campo de texto, etc. Los eventos son clave para que una pagina web sea interactiva
+
+- Un evento es una señal que se envia cuando ocurre una interaccion o cambio en el documento, como un click, o una pulsacion de tecla
+
+- JavaScript permite escuchar estos eventos y ejecutar funciones especificas cuando ocurren
+
+
+=============================
+    Eventos comunes
+=============================
+
+- Eventos de mouse: click, mouseover, mouseout, mousemove
+- Eventos de teclado: keydown, keyup
+- Eventos de formulario: submit, change, input, focus
+- Eventos de ventana: resize, scroll, load, unload
+*/
+
+// add event listener -> añadir escuchador de eventos (creamos un proceso en permanente ejecucion)
+// Escuchamos el evento click
+
+// Opcion 1: Definimos la funcion como parte del segundo parametro del metodo addEventListener
+/*
+boton.addEventListener("click", function() {
+    // alert("jijiji me hace cosquillas");
+    console.log("Era broma, no me hace cosquillas");
+});
+*/
+   
+function mensajeConsola() {
+    console.log("Soy un mensaje desde la consola");
+}
+
+// Opcion 2: Definimos afuera la funcion y la invocamos por su nombre
+boton.addEventListener("click", mensajeConsola);
+
+
+/*=====================
+    Entendiendo event
+=======================
+
+La razon por la cual algunos addEventListener incorporan la palabra clave event tiene que ver con la necesidad de acceder a la informacion de evento que fue disparado
+
+El event es un objeto que contiene TODOS LOS DATOS del evento que ocurrió: que tecla se presiono, coordenadas del mouse, etc
+
+Cuando necesitamos event?
+Solo necesitamos incluir event ennuestra funcion si vamos a usar informacion sobre el event
+*/
+
+// Escuchamos el evento de teclado
+let input = document.getElementById("input");
+
+// En este caso, usamos una funcion flecha (un solo parametro, parentesis opcionales)
+input.addEventListener("keydown", event => {
+    console.log(`Tecla presionada: ${event.key}`); // Imprimimos el caracter o nombre de la tecla presionada
+    console.log(`Codigo de la tecla: ${event.code}`); // Codigo fisico de la tecla (independiente del idioma del teclado)
+});
+
+
+/*=============================
+    Propagacion de eventos
 ===============================
-    Buenas practicas
-===============================
 
-- Usar const para variables de solo lectura, como constantes u objetos inmutables.
-- Usar let para variables que puedan cambiar con el tiempo
-- Evitar usar var debido a su ambito global que puede dar lugar a conflictos y bugs
-*/
-
-// Ejemplo Let con redeclaracion pero sin reasignacion
-let x = 10;
-x = 20;
-console.log(x);
-// let x = 30; // Uncaught SyntaxError: Identifier 'x' has already been declared
-
-const obj = { nombre: "Andy" };
-obj.nombre = "Gavin";
-console.log(obj.nombre); // "Gavin"
-
-// obj = {}; // Uncaught TypeError: Assignment to constant variable.
-
-
-
-/*========================================
-     Introduccion a las funciones
-     =====================================
-
-Una funcion es un bloque de codigo reutilizable que se puede ejecutar cuando se llama por su nombre (se invoca)
-
-Las funciones son fundamentales para la modularidad y reutilizacion del codigo
-
-Por que usarlas?
-    - Facilita la organizacion del codigo
-    - Permite la reutilizacion , principio DRY (Dont Repeat Yourself)
-    - Mejora la legibilidad y el mantenimiento
-
-
-Funcion declarada: La forma mas comun de declarar una funcion en JS es con la palabra clave function
-
-    function nombreFuncion() {
-        // Bloque de codigo que se ejecutara cuando se llame a la funcion
-    }
-
-Funciones con parametros: Se pueden definir variables en las funciones que acepten valores cuando se les llame
-
-    - Los parametros son los nombres de las variables que definimos en la declaracion de la funcion
-    - Los argumentos son los valores que pasamos a la funcion cuando la llamamos
-*/
-
-// Ejemplo funcion con parametros
-function sumar(a, b) { // (a y b son nuestros parametros)
-    let resultado = a + b;
-    console.log(`El resultado es: ${resultado}`);
-}
-
-// 5 y 3 son los argumentos (los valores que les pasamos a los parametros)
-sumar(5, 3);
-
-// Funciones que devuelven un valor: Las funciones pueden devolver un valor utilizando la palabra clave return
-function multiplicar(a, b) {
-    return a * b;
-}
-
-console.log(multiplicar(4, 5));
-
-
-
-/*==========================================
-    10 tipos de funciones en JavaScript
-============================================
-
-1. Funcion declarada / Named funcion o Basic function
+Cuando ocurre un evento, este se propaga a traves del DOM en 2 fases
     
-    Es la declaracion basica de JavaScript, usa la keyword function
+    - fase de captura (de arriba para abajo)
+    - fase de burbuja (de abajo para arriba)
 
-    Se recomienda para funciones con nombre o cuando se necesite hoisting. Las funciones declaradas con la keyword function se pueden elevar a la parte superior de su ambito, es decir, del scope que las contiene.
-    Esto permite llamar a la funcion antes de ser declarada.
+Podemos evitar la propagacion de un evento usando el metodo event.stopPropagation()
 
+<div id="padre">
+        <button id="hijo">Boton hijo</button>
+    </div>
 */
-// Ejemplo funcion declarada
-saludito(); // Hola holiiita
 
-function saludito() {
-    console.log("Hola holiiita");
+let padre = document.getElementById("padre");
+let hijo = document.getElementById("hijo");
+
+padre.addEventListener("click", function() {
+    console.log("Se hizo click ene l div padre"); 
+});
+
+hijo.addEventListener("click", function(event) {
+    event.stopPropagation(); // Evitamos la propagacion
+    console.log("Se hizo click en el elemento hijo")
+});
+
+
+
+/*============================================
+    Repaso almacenamiento persistente!
+==============================================
+
+El almacenamiento persistente en JavaScript es una parte fundamental para crear aplicaciones web que puedan recordar info del usuario entre sesiones o durante la navegacion
+
+sessionStorage y localStorage son mecanismos que nos proporciona el navegador para almacenar datos del lado del cliente, pero cada uno tiene un propósito distinto en términos de persistencia, capacidad y ámbito de acceso
+
+
+/////////////////
+// localStorage
+
+localStorage es una API web (Veremos concretamente que son las API web en JS VII) que nos permite almacenar datos de manera persistente en el navegador.
+Los datos almacenados en localStorage no tienen una fecha de expiracion, por loq ue estaran disponibles incluso despues de que el usuario cierre el navegador o apague la compu.
+
+- Tamaño máximo: 5-10 MB por dominio
+- Persistente
+- Accesible solo desde JS (no se envía al servidor)
+
+
+Usos tipicos, almacenar...
+    - Configuraciones de usuario
+    - Temas
+    - Carrito de compras
+
+
+/////////////////
+// sessionStorage
+
+Muy similar a localStorage, pero los datos solo se mantienen disponibles durante la sesion del navegeador.
+Cuando cerramos la pestaña o la ventana del navegador, los datos se eliminan automaticamente
+
+- Tamaño máximo: 5-10 MB por dominio
+- Se borra al cerrar la pestaña
+- Accesible solo desde JS (no se envía al servidor)
+
+
+Usos tipicos, almacenar...
+    - Guardar datos temporales mientras la pestaña está abierta
+    - Información de formularios
+
+
+
+///////////////////////////////////////
+// Metodos de localStorage y sessionStorage
+
+    1. Guardar datos:               localStorage.setItem(key, value)
+    2. Leer datos:                  localStorage.getItem(key)
+    3. Eliminar datos:              localStorage.removeItem(key)
+    4. Eliminamos todos los datos:  localStorage.clear()
+
+
+
+///////////////////////////////////////
+// Cuando no usar local o sessionStorage?
+
+- Nunca para informacion sensible como contraseñas o tokens de autenticacion
+- No son seguras, ya que el contenido es accesible desde cualquier script en la pagina
+*/
+
+// Guardamos un nombre con la clave "nombre"
+sessionStorage.setItem("nombre", "Ari");
+console.log(sessionStorage.getItem("nombre")); // Ari
+
+// Guardamos tema e idioma
+localStorage.setItem("tema", "oscuro");
+localStorage.setItem("idioma", "es");
+
+// Eliminamos el item "nombre"
+localStorage.removeItem("nombre");
+
+// Eliminamos todo
+// localStorage.clear()
+
+let pedidos = [
+    { id: 1, nombre: "Hamburguesa", cantidad: 2},
+    { id: 2, nombre: "Papas fritas", cantidad: 3},
+    { id: 3, nombre: "Birra", cantidad: 5},
+    { id: 4, nombre: "Alfajores", cantidad: 2},
+];
+
+
+/* Introduccion a JSON
+Ojota! localStorage y sessionStorage SOLO almacenan texto plano!
+Tenemos la necesidad de transformar toda nuestra informacion en un choclo de string
+
+JSON es basicamente texto plano, eficiente, ligero, ordenado y que se convirtió en un standard a la hora de enviar y recibir informacion en internet
+
+JSON toma la sintaxis de objetos de JavaScript -> JSON es JavaScript Object Notation
+Toma su sintaxis pero es independiente del lenguaje
+
+Ahora sabemos que para almacenar informacion, como un carrito de compras, necesitamos transformar nuestros datos a texto plano JSON.
+
+Para eso JavaScript nos proporciona dos métodos
+
+    - JSON.stringify() -> Este metodo convierte datos a texto plano JSON, listo para ser enviado o almacenado en localStorage
+
+    - JSON.parse() -> Este metodo revierte la conversion de datos a texto plano. Basicamente convierte texto plano JSON a objetos o array de objetos en JavaScript
+*/
+
+// Ahora, con esta data, vamos a guardar estos pedidos, en el almacenamiento persistente que nos ofrece el navegador con localStorage
+
+// Vamos a transformar nuestros pedidos a JSON
+// Guardamos todo en una variable y lo almacenamos
+console.log(pedidos); // Como nos muestra la consola el array de objetos
+
+let pedidosJSON = JSON.stringify(pedidos);
+console.log(pedidosJSON); // Como nos muestra la consola nuestro array de objetos convertido en un string JSON
+
+// Opcion 1, mas comodo, guardamos la variable
+localStorage.setItem("pedidos", pedidosJSON);
+
+// Opcion 2, ya hacen la conversion cuando guardan
+// localStorage.setItem("pedidos", JSON.stringify(pedidos))
+
+// Ahora vamos a obtener del almacenamiento persistente -> localStorage el item personas
+let personasJSON = localStorage.getItem("personas");
+console.log(personasJSON); // Ahora estoy viendo el JSON pero necesito transformar este texto plano JSON a objetos JavaScript para poder manipular el array, acceder a sus propiedades, etc
+
+// Transformamos el JSON en objetos JavaScript
+let personasArray = JSON.parse(personasJSON);
+console.log(personasArray);
+
+
+
+personasArray.forEach(persona => console.log(`Nombre: ${persona.nombre}`));
+
+// Vamos a transformar el JSON, ahora almacenado en nuestro navegador y lo vamos a convertir en objetos JS para poder iterarlos, guardarlos en una lista HTML e imprimirlos por pantalla
+
+// En una sola linea, guardo en una variable mi JSON extraido de la memoria del navegador y convertido ya a objetos para poder manipularlos
+let pedidosArray = JSON.parse(localStorage.getItem("pedidos"));
+console.log(pedidosArray);
+
+// Vamos a recorrer pedidosArray y a crear dinamicamente el HTML para renderizarlo en el contenedor <div id="contenedor-pedidos"></div>
+let contenedorPedidos = document.getElementById("contenedor-pedidos");
+// Ahora mi contendor ya esta almacenado en una variable, a la que mas adelante le dire contenedorPedidos.innerHTML = "<ul><li>hamburguesa</li><li>papas fritas</li><li>birra</li><li>Alfajores</li></ul>"
+
+// Necesitamos ir armando un choclo HTML con todos los nombres de los pedidos como elementos de una lista
+let pedidosHTML = "<ul>";
+
+// Ahora vamos a crear HTML dinamico, vamos a llenar la lista con los nombres como elementos lista <li>nombrePedido1</li>
+// Opcion 2: Iteramos con un for clasico
+for (let i = 0; i < pedidosArray.length; i++) {
+    // El operador += toma el valor anterior y le va sumando nuevos valores
+    pedidosHTML += `<li>${pedidosArray[i].nombre}</li>`;
+    // Vamos armando un chocho HTML en cada iteracion
 }
 
-/* 2. Funcion expresada / Function expression
-    Es la funcion que esta dentro de una variable.
-    
-    Son utiles para:
-        funciones anonimas
-        cuando se quiere controlar donde va a estar disponible la funcion
-        cuando va a ser usada como argumento para otra funcnion
+pedidosHTML += "</ul>"; // Ahora cierro la lista que fui creando
+console.log(pedidosHTML); 
+/*
+<ul><li>Hamburguesa</li><li>Papas fritas</li><li>Birra</li><li>Alfajores</li></ul>*/
+
+/* Opcion 1: Iteramos con un forEach
+// Queremos crear un contenedor <ul> y cada nombre del pedido sera un elemento <li>
+let htmlPedidos = "<ul>";
+
+// Recorremos el array con pedidosArray.forEach()
+pedidosArray.forEach(pedido => {
+    htmlPedidos += `<li>`
+});
 */
 
-// Ejemplo funcion expresada
-const lamento = function() {
-    console.log("Muy lunes che... fah");
-}
-
-lamento();
-
-
-/* 3. Funcion anonima / Anonymous funcion
-    No tiene nombre y se usan como callbacks generalmente
-*/
-
-// Ejemplo funcion anonima
-setTimeout(function() {
-    console.log("Hola mundo");
-}, 1000);
-
-
-/* 4. Funcion de flecha / Arrow function
-    Especialmente utiles para escribir funciones de una linea.
-    No tienen su propio this
-*/
-
-// Ejemplo funcion flecha (ambas hacen exactamente lo mismo)
-const sumame = (a, b) => a + b;
-const sumame2 = (a, b) => {
-    return a + b;
-}
-
-/* 5. Funcion de metodos / Method function
-    Son las funciones definidas dentro de un objeto
-*/
-
-// Ejemplo funcion de metodos
-const persona = {
-    nombre: "Juan",
-    saludar() {
-        console.log(`Hola! me llamo ${this.nombre}`);
-    }
-}
-
-persona.saludar();
-
-
-/* 6. Funcion de constructor / Constructor function
-    Se usan para crear objetos, se invocan usando la keyword new
-*/
-
-function Usuario(nombre, id) {
-    this.nombre = nombre;
-    this.id = id;
-}
-
-const marcos = new Usuario("Marcos", 12345);
-console.log(marcos.id);
-
-
-/* 7. Expresion de funcion ejecutada inmediatamente / IIFE - Immediately Invoked Function Expression
-    Las IIFE son funciones que se ejecutan inmediatamente despues de haberse definido
-*/
-
-(function() {
-    console.log("Holis! Soy una IIFE y me ejecuto al toque, perro");
-})();
-
-
-
-/* 8. Funcion generadora o Generadores / Generator function
-    Son un tipo especial de funciones que sirven como una fabrica de iteradores. Es decir, pausan su ejecucion y continuan mas tarde
-*/
-
-function* crearId() {
-    let index = 0;
-    while (true) {
-        yield index++
-    }
-}
-
-const generador = crearId();
-
-console.log(generador.next().value); // 0
-console.log(generador.next().value); // 1
-console.log(generador.next().value); // 
-console.log(generador.next().value); // 
-console.log(generador.next().value); // 
-console.log(generador.next().value); // 
-console.log(generador.next().value); // 
-
-
-/* 9. Funciones de orden superior / High Order Functions
-    Las veremos mas adelante en JavaScript VI
-*/
-
-
-/* 10. Funcion asincronica / Async function
-    Las veremos mas adelante en JavaScript VII y VIII
-*/
-
-
-
-/*======================
-    Funciones flecha
-========================
-
-Son una forma mas compacta de escribir funciones. Se introdujeron en ES6 y tienen una sintaxis mas concisa.
-
-    const nombreFuncion = (parametros) => {
-        // Bloque de codigo    
-    }
-
-    // Ojo! Cuando tiene solamente una instruccion, podemos prescidir de las {} y lleva implicito un return
-    const nombreFuncion = (parametros) => Bloque de codigo
-
-    es lo mismo que 
-    const nombreFuncion2 = () => {
-        return // bloque de codigo    
-    }
-*/
-
-// Flecha 1. Funcion sin parametros: Se pueden usar parentesis vacias
-const saludar = () => console.log("Hola mundo!");
-saludar();
-
-// Flecha 2. Un solo parametro: Las parentesis son opcionales
-const cuadrado = x => x * x;
-console.log(cuadrado(4));
-
-// Flecha 3. Mas de un parametro
-const sumarFlecha = (a, b) => a + b;
-
-//  Flecha 4. Mas de una instruccion: Si el cuerpo de la funcion tiene mas de una instruccion, necesitamos usar {} y la palabra clave return si queremos devolver un valor
-const saludarPersona = nombre => {
-    const saludo = `Holis ${nombre}!`;
-    return saludo;
-}
-
-console.log(saludarPersona("Ari"));
-
-
-// Flecha 5: Muy populares en las funciones de orden superior y callbacks
+// Ahora que armamos nuestra lista dinamica en JavaScript, tenemos que renderizar nuestro HTML en el contenedorPedidos
+contenedorPedidos.innerHTML = pedidosHTML;

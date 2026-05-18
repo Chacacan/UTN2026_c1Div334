@@ -1,6 +1,7 @@
 # UTN2026_c1Div334
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### Practica maquetacion grupal, [pagina apple](https://www.apple.com/)
 - [GDB Apple I](https://onlinegdb.com/cyDNoPiPT)
 =======
@@ -8,8 +9,21 @@
 - Clase Bootstrap
 - Resolver dudas JavaScript I y II
 - Avanzamos con JavaScript III y IV
+=======
+
+## Prox clase lunes 11/05
+- Resolver dudas de cara al parcial
+- Practicar algo si se necesita
+- Avanzar con clases conceptuales tranca (Protocolo HTTP, markdown, etc)
+
+
+>>>>>>> 401e9e8cb8d5b14347906f5bb1c1b833809e58cf
 
 ---
+
+## Recursos
+- [Editor online JavaScript](https://runjs.app/play)
+
 
 ## Videos recomendados
 ### [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
@@ -88,6 +102,18 @@
 
 ## Backend
 ### [Clase 2hs Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
+- Repasar paradigmas de programacion en JavaScript al llegar a Express.js
+- Revisar objetos globales en Node.js 
+
+
+---
+
+
+## Sitios recomendados para ir a comprar
+- Galeria Jardin
+- Polotecno (billinghurst y Corrientes)
+- Noxiestore mexx y  goldentech
+- [Compras online / tiendamia](https://tiendamia.com.ar/)
 
 
 ---

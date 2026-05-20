@@ -1,21 +1,13 @@
 # UTN2026_c1Div334
 
-
-## Prox clase lunes 11/05
-- Resolver dudas de cara al parcial
-- Practicar algo si se necesita
-- Avanzar con clases conceptuales tranca (Protocolo HTTP, markdown, etc)
-
-
-
----
-
 ## Recursos
 - [Editor online JavaScript](https://runjs.app/play)
 
 
 ## Videos recomendados
 ### [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
+
+### [Taller Tecnicas de estudio](https://www.youtube.com/watch?v=5ens8pb5KpA)
 
 ### [Boom de la IA y tendencias de recontrataciones para 2027](https://www.youtube.com/watch?v=OFmxKgaLN80)
 

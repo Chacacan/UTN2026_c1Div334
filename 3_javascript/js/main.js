@@ -1,335 +1,536 @@
-/*===============================================
-    Como funciona la manipulacion del DOM?
-=================================================
-
-- JavaScript puede acceder y modificar cualquier elemento del DOM utilizando el objeto global document
-
-- JavaScript podra
-    - Modificar el contenido (texto, atributos, clases)
-    - Añadir o eliminar elementos del DOM
-    - Escuchar eventos de usuario (clicks, teclas, ble)
-
-
-===========================================
-    Seleccion de elementos en el DOM
+/*=========================================
+    Callbacks en JavaScript
 ===========================================
 
-- getElementById()
-    - Este metodo selecciona un unico elemento por su ID (si no lo encuentra, devuelve null)
-    - Solo selecciona el primer elemento que coincida con el ID
+Los callbacks son funciones que se pasan como argumentos a otras funciones y se ejecutan despues de que ocurra algun evento o se complete alguna operacion*/
+
+// Callbacks 1
+function saludar(nombre, callback) {
+    console.log(`Hola ${nombre}`);
+    // Puedo hacer otras operaciones
+    callback(); // Se ejecuta el callback
+}
+
+function despedirse() {
+    console.log("Nos vemos!");
+}
+
+saludar("Juan", despedirse);
+// Hola Juan
+// Nos vemos!
+
+// Callbacks 2, ejemplo con setTimeout: el primer parametro es una funcion, el segundo parametro es un Number
+setTimeout(() => console.log("Esto se ejecuta despues de 1 segundo"), 1000);
+
+
+/*===================================
+    Caracteristicas principales
+=====================================
+
+1. Funciones de Primera Clase
+
+En JavaScript, las funciones son tratadas como "ciudadanos de primer clase" (first class citizens), lo que significa que pueden:
+
+    - Asignadas a variables
+    - Pasadas como argumentos
+    - Retornadas desde otras funciones
 */
 
-// Guardamos este elemento en una variable
-let titulo = document.getElementById("titulo");
-console.log(titulo); // <h1 id="titulo">Introduccion a JavaScript</h1>
-console.log(titulo.textContent); // Introduccion a JavaScript
+// Asignar funcion a variable
+const miCallback = function() {
+    console.log("Callback ejecutado");
+}
+
+// Pasar como argumento
+function ejecutarCallback(callback) {
+    callback();
+}
+
+ejecutarCallback(miCallback); // Callback ejecutado
+
+// 2. Sincronia vs Asincronia
+
+/////////////////////
+// Callback sincrono
+/*
+function procesoPesado(callback) {
+    console.log("Iniciando proceso...");
+
+    // Simular procesamiento pesado
+    for (let i = 0; i < 10000; i++) {
+        console.log("<- Numero de vueltas de la iteracion");
+    }
+
+    // Al termino de este bucle lento, se llamara finalmente a nuestra funcion
+    callback();
+}
+
+// Este proceso va a detener durante bastantes segundos todo el hilo principal de ejecucion de JavaScript
+procesoPesado(function() {
+    console.log("Proceso completado");
+});
 
 
-/* 
-    - querySelector(): Selecciona el PRIMER elemento que coincida con un selector CSS
-
-    - querySelectorAll(): Selecciona TODOS los elementos que coincidan con el selector CSS
+// Vamos a ver cuanto tarde en verse este mensaje
+console.log("Esto se ejecuta despues del callback");
 */
 
-let primerParafo = document.querySelector(".mensaje");
-console.log(primerParafo.textContent); // Primer parrafo
+///////////////////////
+// Callback asincrono
 
-let parrafos = document.querySelectorAll(".mensaje");
-console.log(parrafos);
+function procesoAsincrono(callback) {
+    console.log("Iniciando proceso asincrono...");
 
-parrafos.forEach(parrafo => console.log(parrafo.textContent)); 
-// Primer parrafo
-// Segundo parrafo
+    // Este proceso va a tardar 5 segundos
+    setTimeout(function() {
+        callback(); // Esta funcion se ejecutara al cabo de 5 segundos
+    }, 5000);
+}
+
+procesoAsincrono(function() {
+    console.log("Proceso asincrono de 5 segundos completado");
+})
+
+
+console.log("Esto se ejecuta despues del proceso asincrono, se vera de inmediato o despues de 5 segundos?");
 
 
 
 /*=========================================
-    Modificar contenido y atributo
-===========================================
+    Casos de usos comunes de callbacks
+=========================================*/
 
-Una vez seleccionado un elemento, podemos modificar su contenido, atributos o estilo.
+////////////////////////
+// 1. Temporizadores (Timers)
+setTimeout(function() {
+    console.log("Esto se ejecuta despues de 3 segundos");
+}, 3000);
 
-- textContent:      Modifica el texto dentro de un elemento
-- innerHTML:        Modifica el contenido HTML dentro de un elemento
-- setAttribute():   Modifica los atributos de un elemento
-- style:            Permite cambiar el estilo CSS en linea de un elemento
-*/
+// setInterval es lo mismo pero se ejecuta cada x segundos
 
-let parrafo = document.getElementById("parrafo");
 
-// Cambiamos el texto
-parrafo.textContent = "Holi! Soy el nuevo texto desde JavaScript! Wiiiiiiiiiiii";
-
-// Modificamos el contenido HTML (incluye etiquetas)
-parrafo.innerHTML = "<strong>Soy el nuevo texto JS en negrita, holis!</strong>";
-
-// Cambiamos el atributo id del boton
+////////////////////////
+// 2. Eventos del DOM
 let boton = document.getElementById("boton");
 
-// Cambiamos el atributo
-boton.setAttribute("id", "nuevoId");
-
-// Cambiamos el estilo
-boton.style.backgroundColor = "purple";
-boton.style.color = "white";
-
-// PRACTICA SUGERIDA (guiño guiño), recorran un array de objetos e imprimanlos en listas, tablas, etc con innerHTML
-
-
-/*=======================
-    Eventos en JS
-=========================
-
-- Los eventos en JS permiten a los desarrolladores detectar interacciones del usuario con la pagina web, como hacer click en un boton, mover el mouse, escribir un campo de texto, etc. Los eventos son clave para que una pagina web sea interactiva
-
-- Un evento es una señal que se envia cuando ocurre una interaccion o cambio en el documento, como un click, o una pulsacion de tecla
-
-- JavaScript permite escuchar estos eventos y ejecutar funciones especificas cuando ocurren
-
-
-=============================
-    Eventos comunes
-=============================
-
-- Eventos de mouse: click, mouseover, mouseout, mousemove
-- Eventos de teclado: keydown, keyup
-- Eventos de formulario: submit, change, input, focus
-- Eventos de ventana: resize, scroll, load, unload
-*/
-
-// add event listener -> añadir escuchador de eventos (creamos un proceso en permanente ejecucion)
-// Escuchamos el evento click
-
-// Opcion 1: Definimos la funcion como parte del segundo parametro del metodo addEventListener
-/*
-boton.addEventListener("click", function() {
-    // alert("jijiji me hace cosquillas");
-    console.log("Era broma, no me hace cosquillas");
+// addEventListener es un callback que recibe de 1er parametro un string y de 2o parametro una funcion
+boton.addEventListener("click", function(event) {
+    console.log(`Jijiji, este es mi evento: ${event.target}`);
 });
+
+
+////////////////////////
+// 3. Operaciones con arrays
+let numeros = [1, 2, 3, 4, 5];
+
+numeros.forEach(function(numero, indice) {
+    console.log(`Indice: ${indice}, valor: ${numero}`);
+});
+
+// map, filter, etc
+
+
+/*
+////////////////////////
+// 4. Peticiones HTTP -> Ver mas abajo
+
+
+
+////////////////////////
+// 5. Lectura de archivos (Node.js)
+
+
+======================
+    Ventajas
+======================
+
+- Simplicidad: Facil de entender para operaciones simples
+- Universalidad: Compatible con todos los navegadores
+- Flexibilidad: Permiten crear codigo reutilizable
+
+
+
+======================
+    Desventajas
+======================
+
+- Callback Hell: Anidamiento excesivo que dificulta la lectura
+- Manejo de errores: Complicado con callbacks anidados
+- Flujo de control: Dificil de seguir con operaciones complejas
+
+
+// Ejemplo de anidamiento "tramboliko" -> callback hell https://dev.to/jerrycode06/callback-hell-and-how-to-rescue-it-ggj
+
+
+
+===================================
+    Alternativas modernas
+    para evitar estos problemas
+===================================
+
+    - Promesas: .then().catch()
+    - Async/Await: Sintaxis mas limpia y legible
+
+
+Promises: Objeto que representa un valor que puede estar disponible ahora, mas adelante o nunca. Sus estados son:
+
+    - Pending
+    - Fulfilled
+    - Rejected
 */
-   
-function mensajeConsola() {
-    console.log("Soy un mensaje desde la consola");
+
+// Hacer una peticion HTTP Get a una API Rest para traer usuarios ficticios
+
+// Obtenemos usuarios
+fetch("https://jsonplaceholder.typicode.com/users") // 1. Hago una peticion HTTP a la URL para obtener los usuarios
+
+    .then(response => { // Aca recibo la respuesta del servidor con el JSON
+        return response.json(); // Es el equivalente a JSON.parse() -> Transformamos el JSON a objetos
+    })
+
+    .then(data => console.table(data)) // Ahora en data tengo los objetos ya parseados
+
+    .catch(error => {
+        console.error("Error al obtener los datos:", error)
+    });
+
+// Los catch nos capturan errores reales de red: no hay internet o servidor caido
+
+
+// async / await simplifica todavia mas esto y manejamos los errores con try catch
+async function obtenerPosts() {
+
+    try {
+        const respuesta = await fetch("https://jsonplaceholder.typicode.com/posts");
+    
+        const datos = await respuesta.json(); // El parseo o conversion de datos tb es una operacion asincrona
+    
+        console.log(datos);
+
+    } catch(error) {
+        console.error("Error al obtener los datos:", error)
+    }
 }
 
-// Opcion 2: Definimos afuera la funcion y la invocamos por su nombre
-boton.addEventListener("click", mensajeConsola);
+obtenerPosts();
 
 
-/*=====================
-    Entendiendo event
-=======================
+/*===========================================================
+    Diferencia entre Callbacks y High Order Functions
+=============================================================
 
-La razon por la cual algunos addEventListener incorporan la palabra clave event tiene que ver con la necesidad de acceder a la informacion de evento que fue disparado
+//////////////////
+// 1. Callback
 
-El event es un objeto que contiene TODOS LOS DATOS del evento que ocurrió: que tecla se presiono, coordenadas del mouse, etc
+    Es simplemente una funcion que pasamos como argumento a otra funcion y que sera llamada en algun momento dentro de esa funcion.
 
-Cuando necesitamos event?
-Solo necesitamos incluir event ennuestra funcion si vamos a usar informacion sobre el event
+    Es el uso concreto de pasar una funcion como parametro
+
+
+////////////////
+// 2. High Order Function 
+
+    Una HOF es una funcion que cumple al menos una de estas dos condiciones
+
+        1. Recibe una o mas funciones como argumentos
+        2. Devuelve una funcion como resultado
+
+
+- Callback es la funcion pasada como argumento
+- High Order Function es la funcion que recibe o devuelve funciones
+- Estan relacionadas pero NO son equivalentes: un callback se usa dentro de una HOF, pero no todas las HOF usan callbacks explicitamente porque pueden devolver funciones en lugar de recibirlas
+
+
+
+=====================
+    Ventajas
+=====================
+
+    - Reduccion de codigo repetitivo
+    - Mayor legibilidad y expresividad
+    - Composicion funcional: permite encadenar transformaciones como .map().filter().reduce()
 */
 
-// Escuchamos el evento de teclado
-let input = document.getElementById("input");
-
-// En este caso, usamos una funcion flecha (un solo parametro, parentesis opcionales)
-input.addEventListener("keydown", event => {
-    console.log(`Tecla presionada: ${event.key}`); // Imprimimos el caracter o nombre de la tecla presionada
-    console.log(`Codigo de la tecla: ${event.code}`); // Codigo fisico de la tecla (independiente del idioma del teclado)
-});
+// Ejemplo 1 HOF -> recibe una funcion
+const cuadrados = numeros.map(n => n * n);
+console.log(cuadrados); // [1, 4, 9, 16, 25]
 
 
-/*=============================
-    Propagacion de eventos
-===============================
+// Ejemplo 2 HOF -> devuelve una funcion
+function multiplicador(factor) {
+    return function(x) {
+        return x * factor;
+    }
+}
 
-Cuando ocurre un evento, este se propaga a traves del DOM en 2 fases
-    
-    - fase de captura (de arriba para abajo)
-    - fase de burbuja (de abajo para arriba)
-
-Podemos evitar la propagacion de un evento usando el metodo event.stopPropagation()
-
-<div id="padre">
-        <button id="hijo">Boton hijo</button>
-    </div>
-*/
-
-let padre = document.getElementById("padre");
-let hijo = document.getElementById("hijo");
-
-padre.addEventListener("click", function() {
-    console.log("Se hizo click ene l div padre"); 
-});
-
-hijo.addEventListener("click", function(event) {
-    event.stopPropagation(); // Evitamos la propagacion
-    console.log("Se hizo click en el elemento hijo")
-});
+const duplicar = multiplicador(2);
+console.log(duplicar(5)); // 10
 
 
-
-/*============================================
-    Repaso almacenamiento persistente!
-==============================================
-
-El almacenamiento persistente en JavaScript es una parte fundamental para crear aplicaciones web que puedan recordar info del usuario entre sesiones o durante la navegacion
-
-sessionStorage y localStorage son mecanismos que nos proporciona el navegador para almacenar datos del lado del cliente, pero cada uno tiene un propósito distinto en términos de persistencia, capacidad y ámbito de acceso
-
-
-/////////////////
-// localStorage
-
-localStorage es una API web (Veremos concretamente que son las API web en JS VII) que nos permite almacenar datos de manera persistente en el navegador.
-Los datos almacenados en localStorage no tienen una fecha de expiracion, por loq ue estaran disponibles incluso despues de que el usuario cierre el navegador o apague la compu.
-
-- Tamaño máximo: 5-10 MB por dominio
-- Persistente
-- Accesible solo desde JS (no se envía al servidor)
-
-
-Usos tipicos, almacenar...
-    - Configuraciones de usuario
-    - Temas
-    - Carrito de compras
-
-
-/////////////////
-// sessionStorage
-
-Muy similar a localStorage, pero los datos solo se mantienen disponibles durante la sesion del navegeador.
-Cuando cerramos la pestaña o la ventana del navegador, los datos se eliminan automaticamente
-
-- Tamaño máximo: 5-10 MB por dominio
-- Se borra al cerrar la pestaña
-- Accesible solo desde JS (no se envía al servidor)
-
-
-Usos tipicos, almacenar...
-    - Guardar datos temporales mientras la pestaña está abierta
-    - Información de formularios
-
-
-
-///////////////////////////////////////
-// Metodos de localStorage y sessionStorage
-
-    1. Guardar datos:               localStorage.setItem(key, value)
-    2. Leer datos:                  localStorage.getItem(key)
-    3. Eliminar datos:              localStorage.removeItem(key)
-    4. Eliminamos todos los datos:  localStorage.clear()
-
-
-
-///////////////////////////////////////
-// Cuando no usar local o sessionStorage?
-
-- Nunca para informacion sensible como contraseñas o tokens de autenticacion
-- No son seguras, ya que el contenido es accesible desde cualquier script en la pagina
-*/
-
-// Guardamos un nombre con la clave "nombre"
-sessionStorage.setItem("nombre", "Ari");
-console.log(sessionStorage.getItem("nombre")); // Ari
-
-// Guardamos tema e idioma
-localStorage.setItem("tema", "oscuro");
-localStorage.setItem("idioma", "es");
-
-// Eliminamos el item "nombre"
-localStorage.removeItem("nombre");
-
-// Eliminamos todo
-// localStorage.clear()
-
-let pedidos = [
-    { id: 1, nombre: "Hamburguesa", cantidad: 2},
-    { id: 2, nombre: "Papas fritas", cantidad: 3},
-    { id: 3, nombre: "Birra", cantidad: 5},
-    { id: 4, nombre: "Alfajores", cantidad: 2},
+let usuarios = [
+    { nombre: "Juan", edad: 25 },
+    { nombre: "Santiago", edad: 32 },
+    { nombre: "Francisco", edad: 18 },
+    { nombre: "Daiana", edad: 20 },
+    { nombre: "Daira", edad: 22 },
 ];
 
+let mayoresEdad = usuarios
+    .filter(user => user.edad >= 21)
+    .map(user => user.nombre);
 
-/* Introduccion a JSON
-Ojota! localStorage y sessionStorage SOLO almacenan texto plano!
-Tenemos la necesidad de transformar toda nuestra informacion en un choclo de string
+console.log(mayoresEdad); // ['Juan', 'Santiago', 'Daira']
 
-JSON es basicamente texto plano, eficiente, ligero, ordenado y que se convirtió en un standard a la hora de enviar y recibir informacion en internet
 
-JSON toma la sintaxis de objetos de JavaScript -> JSON es JavaScript Object Notation
-Toma su sintaxis pero es independiente del lenguaje
 
-Ahora sabemos que para almacenar informacion, como un carrito de compras, necesitamos transformar nuestros datos a texto plano JSON.
 
-Para eso JavaScript nos proporciona dos métodos
+/*===========================
+    Destructuring
+=============================
 
-    - JSON.stringify() -> Este metodo convierte datos a texto plano JSON, listo para ser enviado o almacenado en localStorage
+El destructuring en JavaScript es una sintaxis que permite extraer valores de arrays o propiedades de objetos y asignarnos a variables de forma concisa.
 
-    - JSON.parse() -> Este metodo revierte la conversion de datos a texto plano. Basicamente convierte texto plano JSON a objetos o array de objetos en JavaScript
+El destructuring es una forma de descomponer estructuras de datos como arrays y objetos en variables individuales sin necesidad de acceder manualmente a cada elemento o propiedad
+
+
+    - Mejora la legibildad del codigo
+    - Facilita el acceso rapido a datos de estructuras complejas
+    - Reduce la verbosidad (menos lineas para obtener lo mismo)
 */
 
-// Ahora, con esta data, vamos a guardar estos pedidos, en el almacenamiento persistente que nos ofrece el navegador con localStorage
-
-// Vamos a transformar nuestros pedidos a JSON
-// Guardamos todo en una variable y lo almacenamos
-console.log(pedidos); // Como nos muestra la consola el array de objetos
-
-let pedidosJSON = JSON.stringify(pedidos);
-console.log(pedidosJSON); // Como nos muestra la consola nuestro array de objetos convertido en un string JSON
-
-// Opcion 1, mas comodo, guardamos la variable
-localStorage.setItem("pedidos", pedidosJSON);
-
-// Opcion 2, ya hacen la conversion cuando guardan
-// localStorage.setItem("pedidos", JSON.stringify(pedidos))
-
-// Ahora vamos a obtener del almacenamiento persistente -> localStorage el item personas
-let personasJSON = localStorage.getItem("personas");
-console.log(personasJSON); // Ahora estoy viendo el JSON pero necesito transformar este texto plano JSON a objetos JavaScript para poder manipular el array, acceder a sus propiedades, etc
-
-// Transformamos el JSON en objetos JavaScript
-let personasArray = JSON.parse(personasJSON);
-console.log(personasArray);
+// Sin destructuring
+let listaNumeros = [1, 2, 3];
+let primeroLista = listaNumeros[0];
+let segundoLista = listaNumeros[1];
 
 
+// Con destructuring
+let [uno, dos] = listaNumeros;
+console.log(uno, dos);// 1 2
 
-personasArray.forEach(persona => console.log(`Nombre: ${persona.nombre}`));
 
-// Vamos a transformar el JSON, ahora almacenado en nuestro navegador y lo vamos a convertir en objetos JS para poder iterarlos, guardarlos en una lista HTML e imprimirlos por pantalla
+// Sin destructuring
+let persona = { nombre: "David", edad: 30 };
+let edadPersona = persona.edad;
+let nombrePersona = persona.nombre;
 
-// En una sola linea, guardo en una variable mi JSON extraido de la memoria del navegador y convertido ya a objetos para poder manipularlos
-let pedidosArray = JSON.parse(localStorage.getItem("pedidos"));
-console.log(pedidosArray);
 
-// Vamos a recorrer pedidosArray y a crear dinamicamente el HTML para renderizarlo en el contenedor <div id="contenedor-pedidos"></div>
-let contenedorPedidos = document.getElementById("contenedor-pedidos");
-// Ahora mi contendor ya esta almacenado en una variable, a la que mas adelante le dire contenedorPedidos.innerHTML = "<ul><li>hamburguesa</li><li>papas fritas</li><li>birra</li><li>Alfajores</li></ul>"
+// Con destructuring
+let { nombre, edad } = persona;
+console.log(nombre, edad); // David 30
 
-// Necesitamos ir armando un choclo HTML con todos los nombres de los pedidos como elementos de una lista
-let pedidosHTML = "<ul>";
 
-// Ahora vamos a crear HTML dinamico, vamos a llenar la lista con los nombres como elementos lista <li>nombrePedido1</li>
-// Opcion 2: Iteramos con un for clasico
-for (let i = 0; i < pedidosArray.length; i++) {
-    // El operador += toma el valor anterior y le va sumando nuevos valores
-    pedidosHTML += `<li>${pedidosArray[i].nombre}</li>`;
-    // Vamos armando un chocho HTML en cada iteracion
+// Usos avanzados del destructuring
+
+// 1. Asignar a nuevas variables
+let { nombre: n, edad: e } = persona;
+console.log(n, e); // David 30
+
+
+// 2. Destructuring con valores por defecto
+let { nom, ciudad = "Desconocida" } = { nom: "Gabi" };
+console.log(ciudad); // Desconodida
+
+
+// 3. Destructuring en parametros de funcion
+function crearSaludo({nombre, edad}) {
+    console.log(`Nombre: ${nombre}, tenes ${edad} años`);
 }
 
-pedidosHTML += "</ul>"; // Ahora cierro la lista que fui creando
-console.log(pedidosHTML); 
-/*
-<ul><li>Hamburguesa</li><li>Papas fritas</li><li>Birra</li><li>Alfajores</li></ul>*/
+let alumno = {nombre: "Johnny", edad: 20};
+crearSaludo(persona); // Nombre: David, tenes 30 años
+crearSaludo(alumno); // Nombre: Johnny, tenes 20 años
 
-/* Opcion 1: Iteramos con un forEach
-// Queremos crear un contenedor <ul> y cada nombre del pedido sera un elemento <li>
-let htmlPedidos = "<ul>";
 
-// Recorremos el array con pedidosArray.forEach()
-pedidosArray.forEach(pedido => {
-    htmlPedidos += `<li>`
-});
+// 4. Destructuring de arrays con valores omitidos
+let [primero, ,tercero] = [10, 20, 30];
+console.log(primero, tercero); // 10 30
+
+
+// 5. Rest operator con destructuring
+let [a, ...resto] = [1, 2, 3, 4];
+console.log(a); // 1
+console.log(resto); // [2, 3, 4]
+
+
+
+
+/*===========================
+    Spread operator
+=============================
+
+El spread opreator (operador de propagacion) en JavaScript, denotado por "..." es una sintaxis introducida en ES6 que permite descomponer elementos iterables como arrays, strings y objetos en elementos individuales. Su
+
+Su comportamiento varia segun el contexto en el que se use, pero su principal funcion es copiar, combinar o expandir estructuras de datos de manera eficiente
+
+Como funciona el spread operator?
+    El spread operator trabaja a nivel de valores individuales, extrayendo cada elemento de un iterable y colocandolos en el contexto donde se usa
+
+    Cuando el interprete encuentra ...iterable, automaticamente:
+        
+        1. Convierte el iterable en una secuencia de valores individuales
+
+        2. Propaga (spread) esos valores en el nuevo contexto (array, objeto, llamada a funcion, etc)
+
+        3. No modifica el original
+
+
+El spread operator es una herramienta en JavaScript que simplifica
+
+    - Manipulacion de arrays (copiar y concatenar)
+    - Combinacion de objetos (inmutabilidad, mezcla de propiedades)
+    - Paso de argumentos a funciones
 */
 
-// Ahora que armamos nuestra lista dinamica en JavaScript, tenemos que renderizar nuestro HTML en el contenedorPedidos
-contenedorPedidos.innerHTML = pedidosHTML;
+// Copia superficial o shallow copy
+let original = [1, 2, 3];
+let copia = [...original]; 
+
+console.log(copia); // [1, 2, 3]
+
+/* ==========================
+    1. Entendiendo la copia superficial (shallow copy)
+=============================
+
+    - No es una referencia: cambios en copia no afectan al original
+    - Solo copia un nivel: si hay objetos anidados, estos si se referencian
+*/
+
+// Con numeros simples no tenemos problema
+copia[0] = 10;
+console.log(original); // [1, 2, 3]
+console.log(copia); // [10, 2, 3]
+
+
+let originalObj = [
+    { nombre: "Ari" }
+];
+
+let copiaObj = [...originalObj];
+
+copiaObj[0].nombre = "Carola";
+
+// Solo un nivel significa que copia el array externo pero NO copia objetos ni arrays internos
+console.log(originalObj);  
+/* 
+{
+    "nombre": "Carola"
+}
+*/
+console.log(copiaObj);
+/* 
+{
+    "nombre": "Carola"
+}
+*/
+
+
+// 2. Concatenacion de arrays
+let arr1 = [1, 2];
+let arr2 = [3, 4];
+
+// Mas eficiente que concat(), mejor rendimiento en motores modernos
+let combinados = [...arr1, ...arr2];
+console.log(combinados); // [1, 2, 3, 4]
+
+
+
+// 3. Uso con otros iterables (convierte strings en arrays sin usar split)
+let str = "Holis";
+let caracteres = [...str];
+console.log(caracteres); // ['H', 'o', 'l', 'i', 's']
+
+
+// 4. Combinacion de objetos
+let defaults = { theme: "dark", fontSize: 14 };
+let userSettings = { fontSize: 18 };
+let finalConfig = {...defaults, ...userSettings}; // Las propiedades posteriores sobreescriben a las anteriores
+console.log(finalConfig); // {theme: 'dark', fontSize: 18}
+
+
+// 5. Spread opreator en funciones
+let suma = (a, b, c) => a + b + c;
+let listaSimple = [1, 2, 3];
+console.log(suma(...listaSimple)); // 6
+
+
+// 6. Recoger argumentos restantes (rest parameters)
+function logArgs(first, ...rest) {
+    console.log(first);
+    console.log(rest);
+}
+
+logArgs("a", "b", "c");
+// a
+// ['b', 'c']
+
+
+/*==========================
+    Funciones anidadas
+============================
+
+En JavaScript, una funcion anidada es simplemente una funcion definida dentro de otra funcion. Es decir, una funcion interna que vive en el ambito lexico (scope) de una funcion externa.
+Una funcion anidada es una funcion que:
+
+    - Se declara adentro de otra funcion
+    - Tiene acceso a todas las variables y parametros de su funcion externa
+    - Puede ser utilizada para organizar mejor el codigo, modularizar logica o crear cloures
+
+
+Consideraciones
+    - Las funciones anidadas no estan disponibles fuera del scope donde se definen, a menos que se retornen o se expongan explicitamente
+
+    - Demasiadas funciones anidadas pueden dificultar la legibilidad si no estan bien organizadas
+*/
+
+// Ejemplo basico de funcion anidada
+function saludar(nombre) {
+
+    // Funcion anidada dentro de saludar
+    function construirMensaje() { 
+        return `Hola, ${nombre}`; // Tenemos acceso al parametro nombre de la funcion madre
+    }
+    
+    return construirMensaje();
+}
+
+console.log(saludar("Juan Cruz")); // Hola, Juan Cruz
+
+
+// Usos comunes de funciones anidadas
+
+// 1. Organizacion del codigo: En vez de escribir una gran funcion, se puden definir sub-funciones internas
+function procesarTexto(texto) {
+
+    function limpiar(t) {
+        return t.trim().toLowerCase();
+    }
+
+    function contarPalabras(t) {
+        return t.split(/\s+/).length;
+    }
+
+    let limpio = limpiar(texto);
+    return contarPalabras(limpio);
+}
+
+let stringGabi = "     alto jugador el chelo weigandt    ";
+
+
+console.log(procesarTexto(stringGabi)); // 5
+
+
+// 2. Funciones helper privadas: Las funciones internas no son accesibles desde fuera, lo cual simula privacidad
+
+function crearUsuario(nombre) {
+
+    function validarNombre(n) {
+        return typeof n === "string" && n.length > 2;
+    }
+
+    if(!validarNombre(nombre)) {
+        throw new Error("Nombre no valido");
+    }
+
+    return nombre;
+}

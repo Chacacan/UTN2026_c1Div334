@@ -1,5 +1,20 @@
 # UTN2026_c1Div334
 
+## FECHA RECUPERATORIO 1ER PARCIAL -> *Martes 2 junio en paralelo a la clase*
+
+## Prox clase 01/06
+## Que es un CRUD?
+Es una aplicacion que realiza operaciones de creacion, lectura, actualizacion y eliminacion de registros en una base de datos
+    - Create (POST)
+    - Read (GET)
+    - Update (PUT)
+    - Delete (DELETE)
+
+#### Repaso Protocolo HTTP y saltar a Node.js
+
+---
+
+
 ## Recursos
 - [Editor online JavaScript](https://runjs.app/play)
 
@@ -10,6 +25,10 @@
 ### [Taller Tecnicas de estudio](https://www.youtube.com/watch?v=5ens8pb5KpA)
 
 ### [Boom de la IA y tendencias de recontrataciones para 2027](https://www.youtube.com/watch?v=OFmxKgaLN80)
+
+### [Trailer documental Node.js](https://www.youtube.com/watch?v=SfWPqr04srM)
+
+### [Fundamentos de las paginas web](https://fullstackopen.com/en/part0/fundamentals_of_web_apps)
 
 ---
 

@@ -1,536 +1,371 @@
 /*=========================================
-    Callbacks en JavaScript
+    Asincronia en JavaScript
 ===========================================
 
-Los callbacks son funciones que se pasan como argumentos a otras funciones y se ejecutan despues de que ocurra algun evento o se complete alguna operacion*/
+(Repaso de procesos sincronos y asincronos en JavaScript VII)
+La asincronia es la capacidad de un programa de ejecutar tareas que toman tiempo (acceder a una API o esperar un temporizador) SIN BLOQUEAR la ejecucion del resto del codigo
 
-// Callbacks 1
-function saludar(nombre, callback) {
-    console.log(`Hola ${nombre}`);
-    // Puedo hacer otras operaciones
-    callback(); // Se ejecuta el callback
-}
+En JavaScript esto es clave porque es un lenguaje de de un solo hilo (single-threaded) lo que significa que solo puede ejecutar una tarea a la vez.
+Por eso, para evitar que el hilo principal se bloquee, se introducen mecanismos asincronicos que permiten "deletgar" operaciones que tomaran tiempo y continuar ejecutando el resto del codigo mientras esas tareas se completan.
 
-function despedirse() {
-    console.log("Nos vemos!");
-}
+Herramientas de JavaScript para asincronia
 
-saludar("Juan", despedirse);
-// Hola Juan
-// Nos vemos!
-
-// Callbacks 2, ejemplo con setTimeout: el primer parametro es una funcion, el segundo parametro es un Number
-setTimeout(() => console.log("Esto se ejecuta despues de 1 segundo"), 1000);
+=====================
+    Callbacks
+=====================
+Funcion que se pasa como argumento para ejecutarse despues de completar una operacion. Flexible pero puede llevar a callback hell (anidamiento excesivo)
 
 
-/*===================================
-    Caracteristicas principales
-=====================================
 
-1. Funciones de Primera Clase
+========================
+     Promises 
+========================
+OBJETO que representa un valor que puede estar disponible ahora, mas adelante o nunca. Sus estados son:
 
-En JavaScript, las funciones son tratadas como "ciudadanos de primer clase" (first class citizens), lo que significa que pueden:
+    - pending (pendiente)
+    - fulfilled (completado)
+    - rejected (rechazado)
 
-    - Asignadas a variables
-    - Pasadas como argumentos
-    - Retornadas desde otras funciones
+
+La asincronia es fundamental en JavaScript porque nos permite
+
+    - Hacer llamadas a APIs externas
+    - Acceder a archivos
+    - Animaciones
+    - Eventos de usuario
+    - etc
+
+No deben bloquear el flujo del programa.
 */
 
-// Asignar funcion a variable
-const miCallback = function() {
-    console.log("Callback ejecutado");
-}
+/*===================
+    fetch
+=====================
 
-// Pasar como argumento
-function ejecutarCallback(callback) {
-    callback();
-}
+fetch() es una funcion incorporada (nativa) en los navegadores modernos que permite realizar peticiones HTTP (y HTTPS) de forma asincronica utilizando promesas
 
-ejecutarCallback(miCallback); // Callback ejecutado
+Forma parte de las Web APIs proporcionadas por el navegador (no es parte del lenguaje JavaScript)
+Fue introducida como parte del Fetch API para reemplazar al viejo y complejo XMLHttpRequest
 
-// 2. Sincronia vs Asincronia
+///////////////////////////
+// Caracteristicas de fetch
 
-/////////////////////
-// Callback sincrono
-/*
-function procesoPesado(callback) {
-    console.log("Iniciando proceso...");
-
-    // Simular procesamiento pesado
-    for (let i = 0; i < 10000; i++) {
-        console.log("<- Numero de vueltas de la iteracion");
-    }
-
-    // Al termino de este bucle lento, se llamara finalmente a nuestra funcion
-    callback();
-}
-
-// Este proceso va a detener durante bastantes segundos todo el hilo principal de ejecucion de JavaScript
-procesoPesado(function() {
-    console.log("Proceso completado");
-});
+    - Devuelve un objeto Promise que se resuelve con un objeto Response
+    - Usa el estandar HTTP: Metodos como GET, POST, PUT, DELETE, etc
+    - Funciona muy bien con asnyc/await
+    - Es mas limpia y moderna que XMLHttpRequest
+    - Soporta CORS, cabeceras (headers), envio de JSON y demas
 
 
-// Vamos a ver cuanto tarde en verse este mensaje
-console.log("Esto se ejecuta despues del callback");
+///////////////////////////
+// Sintaxis basica
+
+    fetch(url, options)
+        .then(response => {
+            // Respuesta cruda del servidor    
+        })
+        .catch(error => {
+            // Captura errores de red o fallo total (no hay internet o servidor caido)    
+        })
+
+
+Parametros:
+    - url: string -> La URL a la que queremos hacer una solicitud
+    - options: (opcional) -> Objeto que especifica configuracion adicional como metodo (method), cabeceras (headers), cuerpo (body), etc
 */
 
-///////////////////////
-// Callback asincrono
+let contenedorUser = document.getElementById("contenedor-users");
+let htmlUsuarios = "<ul>";
 
-function procesoAsincrono(callback) {
-    console.log("Iniciando proceso asincrono...");
+// Vamos a consumir los usuarios de la API Rest de prueba y a imprimirlos por pantalla
 
-    // Este proceso va a tardar 5 segundos
-    setTimeout(function() {
-        callback(); // Esta funcion se ejecutara al cabo de 5 segundos
-    }, 5000);
-}
+// Paso 1: Estamos realizando una solicitud HTTP a este servidor para obtener los recursos del siguiente link
+fetch("https://jsonplaceholder.typicode.com/users") // Esta URL nos provee informacion de una BBDD en formato JSON
 
-procesoAsincrono(function() {
-    console.log("Proceso asincrono de 5 segundos completado");
-})
+    // Paso 2: Concluida esta peticion HTTP, recibimos una respuesta cruda (no procesada) del servidor
+    .then(response => {
+        console.log(response); // Aca mostramos por consola la respuesta cruda
+
+        // Aca filtramos si la respuesta fue exitosa -> Codigo 200 "OK"
+        if(!response.ok) {
+            throw new Error("Error HTTP", response.status);
+        }
+
+        return response.json(); // Aca parseamos el JSON, como es una operacion asincronica, continuamos en el .then siguiente
+    })
+
+    // Paso 3: Recibida la respuesta cruda y parseada la info que solicitamos
+    .then(data => {
+        // Aca recibo el JSON parseado (la informacion en texto plano JSON -> Objetos JavaScript con los que podemos interactuar)
+        console.table(data)
+
+        // Voy llenando mi nueva lista <ul> con elementos hijos <li> que contienen el apodo de los usuarios
+        data.forEach(user => {
+            htmlUsuarios += `<li>${user.username}</li>`
+        });
+
+        // Aca termino de llenar el choclo string con etiquetas HTML
+        htmlUsuarios += "</ul>";
+        console.log(htmlUsuarios)
+
+        // Con el choclo html lleno (en formato string) paso a inyectarselo al HTML gracias a innerHTML
+        contenedorUser.innerHTML = htmlUsuarios;
+
+    })
+
+    // Paso Opcional: Si hubiera algun error real de red (sin internet, servidor caido)
+    .catch(error => console.error("Error al obtener los datos: ", error));
 
 
-console.log("Esto se ejecuta despues del proceso asincrono, se vera de inmediato o despues de 5 segundos?");
+/* Ejemplo con opciones con POST para crear recursos
+
+    fetch("http://api.ejemplo.com/posts", {
+        method: "POST", // Crearemos un recurso
+        headers: {
+            "Content-Type": "application/json" // El server recibira un contenido JSON
+        },
+        body: JSON.stringify({ // Convertimos a JSON el siguiente objeto
+            titulo: "Hola",
+            contenido: "Este es un post"
+        })
+    })
+        .then(respuesta => respuesta.json()) // Convertiremos a objetos JS la respuesta que nos de el servidor
+        .then(data => console.log("Respuesta del servidor:", data)) // Por ejemplo "Post creado con exito"
+        .catch(error => console.error("Error: ", error));
+
+*/
+
+
+/*==========================
+    El objeto response
+============================
+
+La promesa que devuelve fetch() se resuelve con un objeto Response que tiene:
+
+    - .ok -> booleano (true si el status esta entre 200 y 299)
+
+    - .status -> Codigo HTTP (200, 404)
+
+    - .statusText -> Texto del estado ("OK", "Not Found")
+
+    - .headers -> Cabeceras HTTP de la respuesta
+
+    - .json(), .text(), .blob(), .formData -> Para leer el contenido de la respuesta
+
+
+Recordemos que fetch() solo rechaza la promesa en errores de red reales (sin internet, servidor caido)
+No rechaza en codigos de error HTTP (404 o 500), por eso debemos revisar el response.ok
+
+
+
+=========================================
+    Casos de uso comunes de fetch
+=========================================
+
+    - Consumir APIs Rest (ej obtener datos de usuarios, productos, cotizaciones, info meteorologica)
+    
+    - Enviar formularios con POST
+    
+    - Cargar contenido dinamico en una SPA (Single Page Application) -> https://fullstackopen.com/en/part0/fundamentals_of_web_apps
+
+    - Interacciones cliente-servidor en tiempo real con WebSockets
+
+
+=========================================
+    Resumen conceptual
+=========================================
+
+- Que es? fetch es una web api que permite hacer peticiones HTTP
+- Que devuelve? Un objeto Promise
+- Es sincronica? No, es asincronica
+- Que reemplaza? Al obsoleto XMLHttpRequest
+- Que recibe? Una url y un objeto options ocional
+- Que devuelve? Un objeto Response con metodos para acceder al cuerpo
+- Rechaza en error HTTP? No, solo en errores de red, por eso revisar el response.ok
+*/
+
 
 
 
 /*=========================================
-    Casos de usos comunes de callbacks
-=========================================*/
+    async/await en JavaScript
+===========================================
 
-////////////////////////
-// 1. Temporizadores (Timers)
-setTimeout(function() {
-    console.log("Esto se ejecuta despues de 3 segundos");
-}, 3000);
+async/await es "syntactic sugar" sobre las Promises (una forma mas sencilla de escribir promesas).
+Introducida en ECMAScript 2017 (ES8) que permite escribir codigo asincrono con una sintaxis similar al codigo sincrono
 
-// setInterval es lo mismo pero se ejecuta cada x segundos
+El objeto es hacer el manejo de la asincronia mas legible, estructurado y facil de depurar
 
+    - La palabra clave asnyc se usa para declarar una funcion asincronica, la cual siempre devuelve una promesa
 
-////////////////////////
-// 2. Eventos del DOM
-let boton = document.getElementById("boton");
-
-// addEventListener es un callback que recibe de 1er parametro un string y de 2o parametro una funcion
-boton.addEventListener("click", function(event) {
-    console.log(`Jijiji, este es mi evento: ${event.target}`);
-});
-
-
-////////////////////////
-// 3. Operaciones con arrays
-let numeros = [1, 2, 3, 4, 5];
-
-numeros.forEach(function(numero, indice) {
-    console.log(`Indice: ${indice}, valor: ${numero}`);
-});
-
-// map, filter, etc
-
-
-/*
-////////////////////////
-// 4. Peticiones HTTP -> Ver mas abajo
+    - La palabra clave await pausa la ejecucion de la funcion async hasta que una Promesa sea resuelta (fulfilled) o rechazada (rejected)
 
 
 
-////////////////////////
-// 5. Lectura de archivos (Node.js)
+Que pasa internamente con await?
+Cuando usamos await, JavaScript
+
+    1. Evalua la expresion que devuelve una promesa
+    2. SUSPENDE la ejecucion de la funcion hasta que la promesa se resuelva o rechace
+    3. Si se resuelve, se continua con el valor
+    4. Si se rechaza, lanza un error que puede ser atrapado por try...catch
 
 
-======================
-    Ventajas
-======================
-
-- Simplicidad: Facil de entender para operaciones simples
-- Universalidad: Compatible con todos los navegadores
-- Flexibilidad: Permiten crear codigo reutilizable
-
-
-
-======================
-    Desventajas
-======================
-
-- Callback Hell: Anidamiento excesivo que dificulta la lectura
-- Manejo de errores: Complicado con callbacks anidados
-- Flujo de control: Dificil de seguir con operaciones complejas
-
-
-// Ejemplo de anidamiento "tramboliko" -> callback hell https://dev.to/jerrycode06/callback-hell-and-how-to-rescue-it-ggj
-
-
-
-===================================
-    Alternativas modernas
-    para evitar estos problemas
-===================================
-
-    - Promesas: .then().catch()
-    - Async/Await: Sintaxis mas limpia y legible
-
-
-Promises: Objeto que representa un valor que puede estar disponible ahora, mas adelante o nunca. Sus estados son:
-
-    - Pending
-    - Fulfilled
-    - Rejected
+Recordemos
+    - await bloquea la ejecucion dentro de la funcion asnyc, NO bloquea el hilo principal
+    - Las funciones asnyc siempre devuelven una Promesa
+    - await tambien puede usarse con funciones que no devuelven promesas
 */
 
-// Hacer una peticion HTTP Get a una API Rest para traer usuarios ficticios
 
-// Obtenemos usuarios
-fetch("https://jsonplaceholder.typicode.com/users") // 1. Hago una peticion HTTP a la URL para obtener los usuarios
-
-    .then(response => { // Aca recibo la respuesta del servidor con el JSON
-        return response.json(); // Es el equivalente a JSON.parse() -> Transformamos el JSON a objetos
-    })
-
-    .then(data => console.table(data)) // Ahora en data tengo los objetos ya parseados
-
-    .catch(error => {
-        console.error("Error al obtener los datos:", error)
-    });
-
-// Los catch nos capturan errores reales de red: no hay internet o servidor caido
-
-
-// async / await simplifica todavia mas esto y manejamos los errores con try catch
+// Paso 1: Defino una funcion asincrona que hara una peticion HTTP a una API Rest para obtener datos en JSON
 async function obtenerPosts() {
-
-    try {
-        const respuesta = await fetch("https://jsonplaceholder.typicode.com/posts");
     
-        const datos = await respuesta.json(); // El parseo o conversion de datos tb es una operacion asincrona
+    // Paso 2: Manejo los errores en async/await con un bloque try...catch
+    try {
+        let contenedorPosts = document.getElementById("contenedor-posts");
+        let htmlPosts = "<ul>";
+
+        // Paso 3: Inicio una peticion HTTP a la url para obtener posts en JSON
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+
+        if(!response.ok) {
+            throw new Error("Error HTTP", response.status);
+        }
+        
+        console.log(response); // aca imprimo por consola la respuesta cruda del servidor
+    
+        // Paso 4: Parseo los datos en JSON que me trae response y cuando se parsee se guarda en la variable datos
+        const datos = await response.json();
     
         console.log(datos);
 
+        datos.forEach(post => {
+            htmlPosts += `<li>${post.title}</li>`
+        });
+
+        htmlPosts += "</ul>";
+
+        contenedorPosts.innerHTML = htmlPosts;
+
     } catch(error) {
-        console.error("Error al obtener los datos:", error)
+        console.error("Error: ", error);
     }
+
 }
 
 obtenerPosts();
 
 
-/*===========================================================
-    Diferencia entre Callbacks y High Order Functions
-=============================================================
 
-//////////////////
-// 1. Callback
+/*==========================
+    .then vs async/await
+============================
 
-    Es simplemente una funcion que pasamos como argumento a otra funcion y que sera llamada en algun momento dentro de esa funcion.
+Como escribir nuestras promesas?
 
-    Es el uso concreto de pasar una funcion como parametro
-
-
-////////////////
-// 2. High Order Function 
-
-    Una HOF es una funcion que cumple al menos una de estas dos condiciones
-
-        1. Recibe una o mas funciones como argumentos
-        2. Devuelve una funcion como resultado
-
-
-- Callback es la funcion pasada como argumento
-- High Order Function es la funcion que recibe o devuelve funciones
-- Estan relacionadas pero NO son equivalentes: un callback se usa dentro de una HOF, pero no todas las HOF usan callbacks explicitamente porque pueden devolver funciones en lugar de recibirlas
-
-
-
-=====================
-    Ventajas
-=====================
-
-    - Reduccion de codigo repetitivo
-    - Mayor legibilidad y expresividad
-    - Composicion funcional: permite encadenar transformaciones como .map().filter().reduce()
+Ventajas del async/await    
+    - Codigo mas legible y secuencial
+    - Mejor manejo de errores con try/catch
+    - Ideal para flujos largos y complejos de asincronia
 */
 
-// Ejemplo 1 HOF -> recibe una funcion
-const cuadrados = numeros.map(n => n * n);
-console.log(cuadrados); // [1, 4, 9, 16, 25]
+// Opcion 1: Encadenando promesas con .then
+function obtenerAlbums() {
+    fetch("https://jsonplaceholder.typicode.com/albums") // 1. peticion http
+        .then(response => response.json()) // 2. parseo el json
+        .then(data => console.log(data)) // 3. Imprimo por consola la informacion que solicité
+        .catch(error => console.error(error));
+}
 
-
-// Ejemplo 2 HOF -> devuelve una funcion
-function multiplicador(factor) {
-    return function(x) {
-        return x * factor;
+// Opcion 2: Usando async/await
+async function obtenerTodos() {
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/todos"); // 1. peticion http
+        const data = await response.json(); // 2. parseo el json
+        console.log(data); // 3. Imprimo por consola la informacion que solicité
+    } catch (error) {
+        console.error(error);
     }
 }
 
-const duplicar = multiplicador(2);
-console.log(duplicar(5)); // 10
-
-
-let usuarios = [
-    { nombre: "Juan", edad: 25 },
-    { nombre: "Santiago", edad: 32 },
-    { nombre: "Francisco", edad: 18 },
-    { nombre: "Daiana", edad: 20 },
-    { nombre: "Daira", edad: 22 },
-];
-
-let mayoresEdad = usuarios
-    .filter(user => user.edad >= 21)
-    .map(user => user.nombre);
-
-console.log(mayoresEdad); // ['Juan', 'Santiago', 'Daira']
-
-
-
-
-/*===========================
-    Destructuring
-=============================
-
-El destructuring en JavaScript es una sintaxis que permite extraer valores de arrays o propiedades de objetos y asignarnos a variables de forma concisa.
-
-El destructuring es una forma de descomponer estructuras de datos como arrays y objetos en variables individuales sin necesidad de acceder manualmente a cada elemento o propiedad
-
-
-    - Mejora la legibildad del codigo
-    - Facilita el acceso rapido a datos de estructuras complejas
-    - Reduce la verbosidad (menos lineas para obtener lo mismo)
-*/
-
-// Sin destructuring
-let listaNumeros = [1, 2, 3];
-let primeroLista = listaNumeros[0];
-let segundoLista = listaNumeros[1];
-
-
-// Con destructuring
-let [uno, dos] = listaNumeros;
-console.log(uno, dos);// 1 2
-
-
-// Sin destructuring
-let persona = { nombre: "David", edad: 30 };
-let edadPersona = persona.edad;
-let nombrePersona = persona.nombre;
-
-
-// Con destructuring
-let { nombre, edad } = persona;
-console.log(nombre, edad); // David 30
-
-
-// Usos avanzados del destructuring
-
-// 1. Asignar a nuevas variables
-let { nombre: n, edad: e } = persona;
-console.log(n, e); // David 30
-
-
-// 2. Destructuring con valores por defecto
-let { nom, ciudad = "Desconocida" } = { nom: "Gabi" };
-console.log(ciudad); // Desconodida
-
-
-// 3. Destructuring en parametros de funcion
-function crearSaludo({nombre, edad}) {
-    console.log(`Nombre: ${nombre}, tenes ${edad} años`);
-}
-
-let alumno = {nombre: "Johnny", edad: 20};
-crearSaludo(persona); // Nombre: David, tenes 30 años
-crearSaludo(alumno); // Nombre: Johnny, tenes 20 años
-
-
-// 4. Destructuring de arrays con valores omitidos
-let [primero, ,tercero] = [10, 20, 30];
-console.log(primero, tercero); // 10 30
-
-
-// 5. Rest operator con destructuring
-let [a, ...resto] = [1, 2, 3, 4];
-console.log(a); // 1
-console.log(resto); // [2, 3, 4]
-
-
-
-
-/*===========================
-    Spread operator
-=============================
-
-El spread opreator (operador de propagacion) en JavaScript, denotado por "..." es una sintaxis introducida en ES6 que permite descomponer elementos iterables como arrays, strings y objetos en elementos individuales. Su
-
-Su comportamiento varia segun el contexto en el que se use, pero su principal funcion es copiar, combinar o expandir estructuras de datos de manera eficiente
-
-Como funciona el spread operator?
-    El spread operator trabaja a nivel de valores individuales, extrayendo cada elemento de un iterable y colocandolos en el contexto donde se usa
-
-    Cuando el interprete encuentra ...iterable, automaticamente:
-        
-        1. Convierte el iterable en una secuencia de valores individuales
-
-        2. Propaga (spread) esos valores en el nuevo contexto (array, objeto, llamada a funcion, etc)
-
-        3. No modifica el original
-
-
-El spread operator es una herramienta en JavaScript que simplifica
-
-    - Manipulacion de arrays (copiar y concatenar)
-    - Combinacion de objetos (inmutabilidad, mezcla de propiedades)
-    - Paso de argumentos a funciones
-*/
-
-// Copia superficial o shallow copy
-let original = [1, 2, 3];
-let copia = [...original]; 
-
-console.log(copia); // [1, 2, 3]
-
-/* ==========================
-    1. Entendiendo la copia superficial (shallow copy)
-=============================
-
-    - No es una referencia: cambios en copia no afectan al original
-    - Solo copia un nivel: si hay objetos anidados, estos si se referencian
-*/
-
-// Con numeros simples no tenemos problema
-copia[0] = 10;
-console.log(original); // [1, 2, 3]
-console.log(copia); // [10, 2, 3]
-
-
-let originalObj = [
-    { nombre: "Ari" }
-];
-
-let copiaObj = [...originalObj];
-
-copiaObj[0].nombre = "Carola";
-
-// Solo un nivel significa que copia el array externo pero NO copia objetos ni arrays internos
-console.log(originalObj);  
-/* 
-{
-    "nombre": "Carola"
-}
-*/
-console.log(copiaObj);
-/* 
-{
-    "nombre": "Carola"
-}
-*/
-
-
-// 2. Concatenacion de arrays
-let arr1 = [1, 2];
-let arr2 = [3, 4];
-
-// Mas eficiente que concat(), mejor rendimiento en motores modernos
-let combinados = [...arr1, ...arr2];
-console.log(combinados); // [1, 2, 3, 4]
-
-
-
-// 3. Uso con otros iterables (convierte strings en arrays sin usar split)
-let str = "Holis";
-let caracteres = [...str];
-console.log(caracteres); // ['H', 'o', 'l', 'i', 's']
-
-
-// 4. Combinacion de objetos
-let defaults = { theme: "dark", fontSize: 14 };
-let userSettings = { fontSize: 18 };
-let finalConfig = {...defaults, ...userSettings}; // Las propiedades posteriores sobreescriben a las anteriores
-console.log(finalConfig); // {theme: 'dark', fontSize: 18}
-
-
-// 5. Spread opreator en funciones
-let suma = (a, b, c) => a + b + c;
-let listaSimple = [1, 2, 3];
-console.log(suma(...listaSimple)); // 6
-
-
-// 6. Recoger argumentos restantes (rest parameters)
-function logArgs(first, ...rest) {
-    console.log(first);
-    console.log(rest);
-}
-
-logArgs("a", "b", "c");
-// a
-// ['b', 'c']
 
 
 /*==========================
-    Funciones anidadas
+    try...catch en JS
 ============================
 
-En JavaScript, una funcion anidada es simplemente una funcion definida dentro de otra funcion. Es decir, una funcion interna que vive en el ambito lexico (scope) de una funcion externa.
-Una funcion anidada es una funcion que:
-
-    - Se declara adentro de otra funcion
-    - Tiene acceso a todas las variables y parametros de su funcion externa
-    - Puede ser utilizada para organizar mejor el codigo, modularizar logica o crear cloures
+try...catch es una estructura de control utilizada para manejar errores que ocurren durante la ejecucion de bloques de codigo.
+Esta tecnica forma parte del manejo de excepciones en JavaScript. 
+Su objetivo es evitar que errores inesperados detengan la ejecucion del programa y en su lugar permitir maneajr dichos errores de forma controlada
 
 
-Consideraciones
-    - Las funciones anidadas no estan disponibles fuera del scope donde se definen, a menos que se retornen o se expongan explicitamente
+////////////////////////////
+// Que errores puede capturar?
+try.. catch captura errores en tiempo de ejecucion (runtime) como:
 
-    - Demasiadas funciones anidadas pueden dificultar la legibilidad si no estan bien organizadas
+    - Acceso a variables no definidas
+    - Llamadas a funciones inexistentes
+    - Errores lanzados con throw
+    - Problemas en funciones como JSON.parse()
+    - Ojota! NO captura errores de sintaxis, porque estos impiden que el codigo siquiera se ejecute
+
+
+////////////////////////////
+// Como funciona internamente?
+
+    1. El bloque try se ejecuta normalmente
+
+    2. Si ocurre un error dentro del try, se detiene inmediatamente la ejecucion y pasa al bloque catch
+
+    3. El objeto de error (por convencion llamado "error" o "e") contiene informacion como:
+
+        - .name -> tipo de error (TypeError, ReferenceError, etc)
+        - .message -> Mensajje descriptivo
+        - .stack -> pila de llamadas (stack trace)
+
+    4. El bloque finally, si existe, siempre se ejecuta, ocurra o no un error
+
+
+
+
+////////////////////////////
+// throw: lanzar errores manualmente
+
+Podemos lanzar nuestro propios errores con throw, util para validaciones o control de flujo
+
+
+
+////////////////////////////
+// por que no usar try...catch en exceso?
+
+    - Puede ocultar errores reales si no se maneja correctamente
+    - Tiene costo de rendimiento, especialmente en bucles
+    - Es mejor usarlo en secciones donde hay riesgo real de error (I/O, parsing, red, etc)
+
+
+
+////////////////////////////
+// Buenas practicas
+
+    - No atrapemos errores que no podemos manejar
+    - Usemos try...catch solo donde esperamos errores (como parsear datos o hacer llamadas a APIs)
+    - Usemos finally para cerrar recursos, limpiar o terminar tareas (conexiones, indicadores de carga, etc)
+    - Siempre proporcionamos informacion util en el error (e.message)
+
 */
 
-// Ejemplo basico de funcion anidada
-function saludar(nombre) {
+try {
+    // Bloque de codigo que puede lanzar errores
+    const resultado = 10 / 0;
+    console.log(resultado); // Infinity
+    throw new Error("Error personalizado")
 
-    // Funcion anidada dentro de saludar
-    function construirMensaje() { 
-        return `Hola, ${nombre}`; // Tenemos acceso al parametro nombre de la funcion madre
-    }
-    
-    return construirMensaje();
-}
+} catch (error) {
+    // Codigo para manejar el error
+    console.error("Ocurrio un error: ", error.message); // main.js:311 Ocurrio un error:  Error personalizado
 
-console.log(saludar("Juan Cruz")); // Hola, Juan Cruz
-
-
-// Usos comunes de funciones anidadas
-
-// 1. Organizacion del codigo: En vez de escribir una gran funcion, se puden definir sub-funciones internas
-function procesarTexto(texto) {
-
-    function limpiar(t) {
-        return t.trim().toLowerCase();
-    }
-
-    function contarPalabras(t) {
-        return t.split(/\s+/).length;
-    }
-
-    let limpio = limpiar(texto);
-    return contarPalabras(limpio);
-}
-
-let stringGabi = "     alto jugador el chelo weigandt    ";
-
-
-console.log(procesarTexto(stringGabi)); // 5
-
-
-// 2. Funciones helper privadas: Las funciones internas no son accesibles desde fuera, lo cual simula privacidad
-
-function crearUsuario(nombre) {
-
-    function validarNombre(n) {
-        return typeof n === "string" && n.length > 2;
-    }
-
-    if(!validarNombre(nombre)) {
-        throw new Error("Nombre no valido");
-    }
-
-    return nombre;
+} finally { // OPCIONAL
+    // Codigo que se ejecuta siempre con o sin error
+    console.log("Esto se ejecuta siempre"); 
 }

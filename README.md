@@ -1,25 +1,19 @@
 # UTN2026_c1Div334
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-### Practica maquetacion grupal, [pagina apple](https://www.apple.com/)
-- [GDB Apple I](https://onlinegdb.com/cyDNoPiPT)
-=======
-## Prox clase
-- Clase Bootstrap
-- Resolver dudas JavaScript I y II
-- Avanzamos con JavaScript III y IV
-=======
+## FECHA RECUPERATORIO 1ER PARCIAL -> *Martes 2 junio en paralelo a la clase*
 
-## Prox clase lunes 11/05
-- Resolver dudas de cara al parcial
-- Practicar algo si se necesita
-- Avanzar con clases conceptuales tranca (Protocolo HTTP, markdown, etc)
+## Prox clase 01/06
+## Que es un CRUD?
+Es una aplicacion que realiza operaciones de creacion, lectura, actualizacion y eliminacion de registros en una base de datos
+    - Create (POST)
+    - Read (GET)
+    - Update (PUT)
+    - Delete (DELETE)
 
-
->>>>>>> 401e9e8cb8d5b14347906f5bb1c1b833809e58cf
+#### Repaso Protocolo HTTP y saltar a Node.js
 
 ---
+
 
 ## Recursos
 - [Editor online JavaScript](https://runjs.app/play)
@@ -28,7 +22,13 @@
 ## Videos recomendados
 ### [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
 
+### [Taller Tecnicas de estudio](https://www.youtube.com/watch?v=5ens8pb5KpA)
+
 ### [Boom de la IA y tendencias de recontrataciones para 2027](https://www.youtube.com/watch?v=OFmxKgaLN80)
+
+### [Trailer documental Node.js](https://www.youtube.com/watch?v=SfWPqr04srM)
+
+### [Fundamentos de las paginas web](https://fullstackopen.com/en/part0/fundamentals_of_web_apps)
 
 ---
 

@@ -1,335 +1,371 @@
-/*===============================================
-    Como funciona la manipulacion del DOM?
-=================================================
-
-- JavaScript puede acceder y modificar cualquier elemento del DOM utilizando el objeto global document
-
-- JavaScript podra
-    - Modificar el contenido (texto, atributos, clases)
-    - Añadir o eliminar elementos del DOM
-    - Escuchar eventos de usuario (clicks, teclas, ble)
-
-
-===========================================
-    Seleccion de elementos en el DOM
+/*=========================================
+    Asincronia en JavaScript
 ===========================================
 
-- getElementById()
-    - Este metodo selecciona un unico elemento por su ID (si no lo encuentra, devuelve null)
-    - Solo selecciona el primer elemento que coincida con el ID
+(Repaso de procesos sincronos y asincronos en JavaScript VII)
+La asincronia es la capacidad de un programa de ejecutar tareas que toman tiempo (acceder a una API o esperar un temporizador) SIN BLOQUEAR la ejecucion del resto del codigo
+
+En JavaScript esto es clave porque es un lenguaje de de un solo hilo (single-threaded) lo que significa que solo puede ejecutar una tarea a la vez.
+Por eso, para evitar que el hilo principal se bloquee, se introducen mecanismos asincronicos que permiten "deletgar" operaciones que tomaran tiempo y continuar ejecutando el resto del codigo mientras esas tareas se completan.
+
+Herramientas de JavaScript para asincronia
+
+=====================
+    Callbacks
+=====================
+Funcion que se pasa como argumento para ejecutarse despues de completar una operacion. Flexible pero puede llevar a callback hell (anidamiento excesivo)
+
+
+
+========================
+     Promises 
+========================
+OBJETO que representa un valor que puede estar disponible ahora, mas adelante o nunca. Sus estados son:
+
+    - pending (pendiente)
+    - fulfilled (completado)
+    - rejected (rechazado)
+
+
+La asincronia es fundamental en JavaScript porque nos permite
+
+    - Hacer llamadas a APIs externas
+    - Acceder a archivos
+    - Animaciones
+    - Eventos de usuario
+    - etc
+
+No deben bloquear el flujo del programa.
 */
 
-// Guardamos este elemento en una variable
-let titulo = document.getElementById("titulo");
-console.log(titulo); // <h1 id="titulo">Introduccion a JavaScript</h1>
-console.log(titulo.textContent); // Introduccion a JavaScript
+/*===================
+    fetch
+=====================
+
+fetch() es una funcion incorporada (nativa) en los navegadores modernos que permite realizar peticiones HTTP (y HTTPS) de forma asincronica utilizando promesas
+
+Forma parte de las Web APIs proporcionadas por el navegador (no es parte del lenguaje JavaScript)
+Fue introducida como parte del Fetch API para reemplazar al viejo y complejo XMLHttpRequest
+
+///////////////////////////
+// Caracteristicas de fetch
+
+    - Devuelve un objeto Promise que se resuelve con un objeto Response
+    - Usa el estandar HTTP: Metodos como GET, POST, PUT, DELETE, etc
+    - Funciona muy bien con asnyc/await
+    - Es mas limpia y moderna que XMLHttpRequest
+    - Soporta CORS, cabeceras (headers), envio de JSON y demas
 
 
-/* 
-    - querySelector(): Selecciona el PRIMER elemento que coincida con un selector CSS
+///////////////////////////
+// Sintaxis basica
 
-    - querySelectorAll(): Selecciona TODOS los elementos que coincidan con el selector CSS
+    fetch(url, options)
+        .then(response => {
+            // Respuesta cruda del servidor    
+        })
+        .catch(error => {
+            // Captura errores de red o fallo total (no hay internet o servidor caido)    
+        })
+
+
+Parametros:
+    - url: string -> La URL a la que queremos hacer una solicitud
+    - options: (opcional) -> Objeto que especifica configuracion adicional como metodo (method), cabeceras (headers), cuerpo (body), etc
 */
 
-let primerParafo = document.querySelector(".mensaje");
-console.log(primerParafo.textContent); // Primer parrafo
+let contenedorUser = document.getElementById("contenedor-users");
+let htmlUsuarios = "<ul>";
 
-let parrafos = document.querySelectorAll(".mensaje");
-console.log(parrafos);
+// Vamos a consumir los usuarios de la API Rest de prueba y a imprimirlos por pantalla
 
-parrafos.forEach(parrafo => console.log(parrafo.textContent)); 
-// Primer parrafo
-// Segundo parrafo
+// Paso 1: Estamos realizando una solicitud HTTP a este servidor para obtener los recursos del siguiente link
+fetch("https://jsonplaceholder.typicode.com/users") // Esta URL nos provee informacion de una BBDD en formato JSON
+
+    // Paso 2: Concluida esta peticion HTTP, recibimos una respuesta cruda (no procesada) del servidor
+    .then(response => {
+        console.log(response); // Aca mostramos por consola la respuesta cruda
+
+        // Aca filtramos si la respuesta fue exitosa -> Codigo 200 "OK"
+        if(!response.ok) {
+            throw new Error("Error HTTP", response.status);
+        }
+
+        return response.json(); // Aca parseamos el JSON, como es una operacion asincronica, continuamos en el .then siguiente
+    })
+
+    // Paso 3: Recibida la respuesta cruda y parseada la info que solicitamos
+    .then(data => {
+        // Aca recibo el JSON parseado (la informacion en texto plano JSON -> Objetos JavaScript con los que podemos interactuar)
+        console.table(data)
+
+        // Voy llenando mi nueva lista <ul> con elementos hijos <li> que contienen el apodo de los usuarios
+        data.forEach(user => {
+            htmlUsuarios += `<li>${user.username}</li>`
+        });
+
+        // Aca termino de llenar el choclo string con etiquetas HTML
+        htmlUsuarios += "</ul>";
+        console.log(htmlUsuarios)
+
+        // Con el choclo html lleno (en formato string) paso a inyectarselo al HTML gracias a innerHTML
+        contenedorUser.innerHTML = htmlUsuarios;
+
+    })
+
+    // Paso Opcional: Si hubiera algun error real de red (sin internet, servidor caido)
+    .catch(error => console.error("Error al obtener los datos: ", error));
+
+
+/* Ejemplo con opciones con POST para crear recursos
+
+    fetch("http://api.ejemplo.com/posts", {
+        method: "POST", // Crearemos un recurso
+        headers: {
+            "Content-Type": "application/json" // El server recibira un contenido JSON
+        },
+        body: JSON.stringify({ // Convertimos a JSON el siguiente objeto
+            titulo: "Hola",
+            contenido: "Este es un post"
+        })
+    })
+        .then(respuesta => respuesta.json()) // Convertiremos a objetos JS la respuesta que nos de el servidor
+        .then(data => console.log("Respuesta del servidor:", data)) // Por ejemplo "Post creado con exito"
+        .catch(error => console.error("Error: ", error));
+
+*/
+
+
+/*==========================
+    El objeto response
+============================
+
+La promesa que devuelve fetch() se resuelve con un objeto Response que tiene:
+
+    - .ok -> booleano (true si el status esta entre 200 y 299)
+
+    - .status -> Codigo HTTP (200, 404)
+
+    - .statusText -> Texto del estado ("OK", "Not Found")
+
+    - .headers -> Cabeceras HTTP de la respuesta
+
+    - .json(), .text(), .blob(), .formData -> Para leer el contenido de la respuesta
+
+
+Recordemos que fetch() solo rechaza la promesa en errores de red reales (sin internet, servidor caido)
+No rechaza en codigos de error HTTP (404 o 500), por eso debemos revisar el response.ok
+
+
+
+=========================================
+    Casos de uso comunes de fetch
+=========================================
+
+    - Consumir APIs Rest (ej obtener datos de usuarios, productos, cotizaciones, info meteorologica)
+    
+    - Enviar formularios con POST
+    
+    - Cargar contenido dinamico en una SPA (Single Page Application) -> https://fullstackopen.com/en/part0/fundamentals_of_web_apps
+
+    - Interacciones cliente-servidor en tiempo real con WebSockets
+
+
+=========================================
+    Resumen conceptual
+=========================================
+
+- Que es? fetch es una web api que permite hacer peticiones HTTP
+- Que devuelve? Un objeto Promise
+- Es sincronica? No, es asincronica
+- Que reemplaza? Al obsoleto XMLHttpRequest
+- Que recibe? Una url y un objeto options ocional
+- Que devuelve? Un objeto Response con metodos para acceder al cuerpo
+- Rechaza en error HTTP? No, solo en errores de red, por eso revisar el response.ok
+*/
+
 
 
 
 /*=========================================
-    Modificar contenido y atributo
+    async/await en JavaScript
 ===========================================
 
-Una vez seleccionado un elemento, podemos modificar su contenido, atributos o estilo.
+async/await es "syntactic sugar" sobre las Promises (una forma mas sencilla de escribir promesas).
+Introducida en ECMAScript 2017 (ES8) que permite escribir codigo asincrono con una sintaxis similar al codigo sincrono
 
-- textContent:      Modifica el texto dentro de un elemento
-- innerHTML:        Modifica el contenido HTML dentro de un elemento
-- setAttribute():   Modifica los atributos de un elemento
-- style:            Permite cambiar el estilo CSS en linea de un elemento
+El objeto es hacer el manejo de la asincronia mas legible, estructurado y facil de depurar
+
+    - La palabra clave asnyc se usa para declarar una funcion asincronica, la cual siempre devuelve una promesa
+
+    - La palabra clave await pausa la ejecucion de la funcion async hasta que una Promesa sea resuelta (fulfilled) o rechazada (rejected)
+
+
+
+Que pasa internamente con await?
+Cuando usamos await, JavaScript
+
+    1. Evalua la expresion que devuelve una promesa
+    2. SUSPENDE la ejecucion de la funcion hasta que la promesa se resuelva o rechace
+    3. Si se resuelve, se continua con el valor
+    4. Si se rechaza, lanza un error que puede ser atrapado por try...catch
+
+
+Recordemos
+    - await bloquea la ejecucion dentro de la funcion asnyc, NO bloquea el hilo principal
+    - Las funciones asnyc siempre devuelven una Promesa
+    - await tambien puede usarse con funciones que no devuelven promesas
 */
 
-let parrafo = document.getElementById("parrafo");
 
-// Cambiamos el texto
-parrafo.textContent = "Holi! Soy el nuevo texto desde JavaScript! Wiiiiiiiiiiii";
-
-// Modificamos el contenido HTML (incluye etiquetas)
-parrafo.innerHTML = "<strong>Soy el nuevo texto JS en negrita, holis!</strong>";
-
-// Cambiamos el atributo id del boton
-let boton = document.getElementById("boton");
-
-// Cambiamos el atributo
-boton.setAttribute("id", "nuevoId");
-
-// Cambiamos el estilo
-boton.style.backgroundColor = "purple";
-boton.style.color = "white";
-
-// PRACTICA SUGERIDA (guiño guiño), recorran un array de objetos e imprimanlos en listas, tablas, etc con innerHTML
-
-
-/*=======================
-    Eventos en JS
-=========================
-
-- Los eventos en JS permiten a los desarrolladores detectar interacciones del usuario con la pagina web, como hacer click en un boton, mover el mouse, escribir un campo de texto, etc. Los eventos son clave para que una pagina web sea interactiva
-
-- Un evento es una señal que se envia cuando ocurre una interaccion o cambio en el documento, como un click, o una pulsacion de tecla
-
-- JavaScript permite escuchar estos eventos y ejecutar funciones especificas cuando ocurren
-
-
-=============================
-    Eventos comunes
-=============================
-
-- Eventos de mouse: click, mouseover, mouseout, mousemove
-- Eventos de teclado: keydown, keyup
-- Eventos de formulario: submit, change, input, focus
-- Eventos de ventana: resize, scroll, load, unload
-*/
-
-// add event listener -> añadir escuchador de eventos (creamos un proceso en permanente ejecucion)
-// Escuchamos el evento click
-
-// Opcion 1: Definimos la funcion como parte del segundo parametro del metodo addEventListener
-/*
-boton.addEventListener("click", function() {
-    // alert("jijiji me hace cosquillas");
-    console.log("Era broma, no me hace cosquillas");
-});
-*/
-   
-function mensajeConsola() {
-    console.log("Soy un mensaje desde la consola");
-}
-
-// Opcion 2: Definimos afuera la funcion y la invocamos por su nombre
-boton.addEventListener("click", mensajeConsola);
-
-
-/*=====================
-    Entendiendo event
-=======================
-
-La razon por la cual algunos addEventListener incorporan la palabra clave event tiene que ver con la necesidad de acceder a la informacion de evento que fue disparado
-
-El event es un objeto que contiene TODOS LOS DATOS del evento que ocurrió: que tecla se presiono, coordenadas del mouse, etc
-
-Cuando necesitamos event?
-Solo necesitamos incluir event ennuestra funcion si vamos a usar informacion sobre el event
-*/
-
-// Escuchamos el evento de teclado
-let input = document.getElementById("input");
-
-// En este caso, usamos una funcion flecha (un solo parametro, parentesis opcionales)
-input.addEventListener("keydown", event => {
-    console.log(`Tecla presionada: ${event.key}`); // Imprimimos el caracter o nombre de la tecla presionada
-    console.log(`Codigo de la tecla: ${event.code}`); // Codigo fisico de la tecla (independiente del idioma del teclado)
-});
-
-
-/*=============================
-    Propagacion de eventos
-===============================
-
-Cuando ocurre un evento, este se propaga a traves del DOM en 2 fases
+// Paso 1: Defino una funcion asincrona que hara una peticion HTTP a una API Rest para obtener datos en JSON
+async function obtenerPosts() {
     
-    - fase de captura (de arriba para abajo)
-    - fase de burbuja (de abajo para arriba)
+    // Paso 2: Manejo los errores en async/await con un bloque try...catch
+    try {
+        let contenedorPosts = document.getElementById("contenedor-posts");
+        let htmlPosts = "<ul>";
 
-Podemos evitar la propagacion de un evento usando el metodo event.stopPropagation()
+        // Paso 3: Inicio una peticion HTTP a la url para obtener posts en JSON
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
 
-<div id="padre">
-        <button id="hijo">Boton hijo</button>
-    </div>
-*/
+        if(!response.ok) {
+            throw new Error("Error HTTP", response.status);
+        }
+        
+        console.log(response); // aca imprimo por consola la respuesta cruda del servidor
+    
+        // Paso 4: Parseo los datos en JSON que me trae response y cuando se parsee se guarda en la variable datos
+        const datos = await response.json();
+    
+        console.log(datos);
 
-let padre = document.getElementById("padre");
-let hijo = document.getElementById("hijo");
+        datos.forEach(post => {
+            htmlPosts += `<li>${post.title}</li>`
+        });
 
-padre.addEventListener("click", function() {
-    console.log("Se hizo click ene l div padre"); 
-});
+        htmlPosts += "</ul>";
 
-hijo.addEventListener("click", function(event) {
-    event.stopPropagation(); // Evitamos la propagacion
-    console.log("Se hizo click en el elemento hijo")
-});
+        contenedorPosts.innerHTML = htmlPosts;
 
+    } catch(error) {
+        console.error("Error: ", error);
+    }
 
-
-/*============================================
-    Repaso almacenamiento persistente!
-==============================================
-
-El almacenamiento persistente en JavaScript es una parte fundamental para crear aplicaciones web que puedan recordar info del usuario entre sesiones o durante la navegacion
-
-sessionStorage y localStorage son mecanismos que nos proporciona el navegador para almacenar datos del lado del cliente, pero cada uno tiene un propósito distinto en términos de persistencia, capacidad y ámbito de acceso
-
-
-/////////////////
-// localStorage
-
-localStorage es una API web (Veremos concretamente que son las API web en JS VII) que nos permite almacenar datos de manera persistente en el navegador.
-Los datos almacenados en localStorage no tienen una fecha de expiracion, por loq ue estaran disponibles incluso despues de que el usuario cierre el navegador o apague la compu.
-
-- Tamaño máximo: 5-10 MB por dominio
-- Persistente
-- Accesible solo desde JS (no se envía al servidor)
-
-
-Usos tipicos, almacenar...
-    - Configuraciones de usuario
-    - Temas
-    - Carrito de compras
-
-
-/////////////////
-// sessionStorage
-
-Muy similar a localStorage, pero los datos solo se mantienen disponibles durante la sesion del navegeador.
-Cuando cerramos la pestaña o la ventana del navegador, los datos se eliminan automaticamente
-
-- Tamaño máximo: 5-10 MB por dominio
-- Se borra al cerrar la pestaña
-- Accesible solo desde JS (no se envía al servidor)
-
-
-Usos tipicos, almacenar...
-    - Guardar datos temporales mientras la pestaña está abierta
-    - Información de formularios
-
-
-
-///////////////////////////////////////
-// Metodos de localStorage y sessionStorage
-
-    1. Guardar datos:               localStorage.setItem(key, value)
-    2. Leer datos:                  localStorage.getItem(key)
-    3. Eliminar datos:              localStorage.removeItem(key)
-    4. Eliminamos todos los datos:  localStorage.clear()
-
-
-
-///////////////////////////////////////
-// Cuando no usar local o sessionStorage?
-
-- Nunca para informacion sensible como contraseñas o tokens de autenticacion
-- No son seguras, ya que el contenido es accesible desde cualquier script en la pagina
-*/
-
-// Guardamos un nombre con la clave "nombre"
-sessionStorage.setItem("nombre", "Ari");
-console.log(sessionStorage.getItem("nombre")); // Ari
-
-// Guardamos tema e idioma
-localStorage.setItem("tema", "oscuro");
-localStorage.setItem("idioma", "es");
-
-// Eliminamos el item "nombre"
-localStorage.removeItem("nombre");
-
-// Eliminamos todo
-// localStorage.clear()
-
-let pedidos = [
-    { id: 1, nombre: "Hamburguesa", cantidad: 2},
-    { id: 2, nombre: "Papas fritas", cantidad: 3},
-    { id: 3, nombre: "Birra", cantidad: 5},
-    { id: 4, nombre: "Alfajores", cantidad: 2},
-];
-
-
-/* Introduccion a JSON
-Ojota! localStorage y sessionStorage SOLO almacenan texto plano!
-Tenemos la necesidad de transformar toda nuestra informacion en un choclo de string
-
-JSON es basicamente texto plano, eficiente, ligero, ordenado y que se convirtió en un standard a la hora de enviar y recibir informacion en internet
-
-JSON toma la sintaxis de objetos de JavaScript -> JSON es JavaScript Object Notation
-Toma su sintaxis pero es independiente del lenguaje
-
-Ahora sabemos que para almacenar informacion, como un carrito de compras, necesitamos transformar nuestros datos a texto plano JSON.
-
-Para eso JavaScript nos proporciona dos métodos
-
-    - JSON.stringify() -> Este metodo convierte datos a texto plano JSON, listo para ser enviado o almacenado en localStorage
-
-    - JSON.parse() -> Este metodo revierte la conversion de datos a texto plano. Basicamente convierte texto plano JSON a objetos o array de objetos en JavaScript
-*/
-
-// Ahora, con esta data, vamos a guardar estos pedidos, en el almacenamiento persistente que nos ofrece el navegador con localStorage
-
-// Vamos a transformar nuestros pedidos a JSON
-// Guardamos todo en una variable y lo almacenamos
-console.log(pedidos); // Como nos muestra la consola el array de objetos
-
-let pedidosJSON = JSON.stringify(pedidos);
-console.log(pedidosJSON); // Como nos muestra la consola nuestro array de objetos convertido en un string JSON
-
-// Opcion 1, mas comodo, guardamos la variable
-localStorage.setItem("pedidos", pedidosJSON);
-
-// Opcion 2, ya hacen la conversion cuando guardan
-// localStorage.setItem("pedidos", JSON.stringify(pedidos))
-
-// Ahora vamos a obtener del almacenamiento persistente -> localStorage el item personas
-let personasJSON = localStorage.getItem("personas");
-console.log(personasJSON); // Ahora estoy viendo el JSON pero necesito transformar este texto plano JSON a objetos JavaScript para poder manipular el array, acceder a sus propiedades, etc
-
-// Transformamos el JSON en objetos JavaScript
-let personasArray = JSON.parse(personasJSON);
-console.log(personasArray);
-
-
-
-personasArray.forEach(persona => console.log(`Nombre: ${persona.nombre}`));
-
-// Vamos a transformar el JSON, ahora almacenado en nuestro navegador y lo vamos a convertir en objetos JS para poder iterarlos, guardarlos en una lista HTML e imprimirlos por pantalla
-
-// En una sola linea, guardo en una variable mi JSON extraido de la memoria del navegador y convertido ya a objetos para poder manipularlos
-let pedidosArray = JSON.parse(localStorage.getItem("pedidos"));
-console.log(pedidosArray);
-
-// Vamos a recorrer pedidosArray y a crear dinamicamente el HTML para renderizarlo en el contenedor <div id="contenedor-pedidos"></div>
-let contenedorPedidos = document.getElementById("contenedor-pedidos");
-// Ahora mi contendor ya esta almacenado en una variable, a la que mas adelante le dire contenedorPedidos.innerHTML = "<ul><li>hamburguesa</li><li>papas fritas</li><li>birra</li><li>Alfajores</li></ul>"
-
-// Necesitamos ir armando un choclo HTML con todos los nombres de los pedidos como elementos de una lista
-let pedidosHTML = "<ul>";
-
-// Ahora vamos a crear HTML dinamico, vamos a llenar la lista con los nombres como elementos lista <li>nombrePedido1</li>
-// Opcion 2: Iteramos con un for clasico
-for (let i = 0; i < pedidosArray.length; i++) {
-    // El operador += toma el valor anterior y le va sumando nuevos valores
-    pedidosHTML += `<li>${pedidosArray[i].nombre}</li>`;
-    // Vamos armando un chocho HTML en cada iteracion
 }
 
-pedidosHTML += "</ul>"; // Ahora cierro la lista que fui creando
-console.log(pedidosHTML); 
-/*
-<ul><li>Hamburguesa</li><li>Papas fritas</li><li>Birra</li><li>Alfajores</li></ul>*/
+obtenerPosts();
 
-/* Opcion 1: Iteramos con un forEach
-// Queremos crear un contenedor <ul> y cada nombre del pedido sera un elemento <li>
-let htmlPedidos = "<ul>";
 
-// Recorremos el array con pedidosArray.forEach()
-pedidosArray.forEach(pedido => {
-    htmlPedidos += `<li>`
-});
+
+/*==========================
+    .then vs async/await
+============================
+
+Como escribir nuestras promesas?
+
+Ventajas del async/await    
+    - Codigo mas legible y secuencial
+    - Mejor manejo de errores con try/catch
+    - Ideal para flujos largos y complejos de asincronia
 */
 
-// Ahora que armamos nuestra lista dinamica en JavaScript, tenemos que renderizar nuestro HTML en el contenedorPedidos
-contenedorPedidos.innerHTML = pedidosHTML;
+// Opcion 1: Encadenando promesas con .then
+function obtenerAlbums() {
+    fetch("https://jsonplaceholder.typicode.com/albums") // 1. peticion http
+        .then(response => response.json()) // 2. parseo el json
+        .then(data => console.log(data)) // 3. Imprimo por consola la informacion que solicité
+        .catch(error => console.error(error));
+}
+
+// Opcion 2: Usando async/await
+async function obtenerTodos() {
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/todos"); // 1. peticion http
+        const data = await response.json(); // 2. parseo el json
+        console.log(data); // 3. Imprimo por consola la informacion que solicité
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+/*==========================
+    try...catch en JS
+============================
+
+try...catch es una estructura de control utilizada para manejar errores que ocurren durante la ejecucion de bloques de codigo.
+Esta tecnica forma parte del manejo de excepciones en JavaScript. 
+Su objetivo es evitar que errores inesperados detengan la ejecucion del programa y en su lugar permitir maneajr dichos errores de forma controlada
+
+
+////////////////////////////
+// Que errores puede capturar?
+try.. catch captura errores en tiempo de ejecucion (runtime) como:
+
+    - Acceso a variables no definidas
+    - Llamadas a funciones inexistentes
+    - Errores lanzados con throw
+    - Problemas en funciones como JSON.parse()
+    - Ojota! NO captura errores de sintaxis, porque estos impiden que el codigo siquiera se ejecute
+
+
+////////////////////////////
+// Como funciona internamente?
+
+    1. El bloque try se ejecuta normalmente
+
+    2. Si ocurre un error dentro del try, se detiene inmediatamente la ejecucion y pasa al bloque catch
+
+    3. El objeto de error (por convencion llamado "error" o "e") contiene informacion como:
+
+        - .name -> tipo de error (TypeError, ReferenceError, etc)
+        - .message -> Mensajje descriptivo
+        - .stack -> pila de llamadas (stack trace)
+
+    4. El bloque finally, si existe, siempre se ejecuta, ocurra o no un error
+
+
+
+
+////////////////////////////
+// throw: lanzar errores manualmente
+
+Podemos lanzar nuestro propios errores con throw, util para validaciones o control de flujo
+
+
+
+////////////////////////////
+// por que no usar try...catch en exceso?
+
+    - Puede ocultar errores reales si no se maneja correctamente
+    - Tiene costo de rendimiento, especialmente en bucles
+    - Es mejor usarlo en secciones donde hay riesgo real de error (I/O, parsing, red, etc)
+
+
+
+////////////////////////////
+// Buenas practicas
+
+    - No atrapemos errores que no podemos manejar
+    - Usemos try...catch solo donde esperamos errores (como parsear datos o hacer llamadas a APIs)
+    - Usemos finally para cerrar recursos, limpiar o terminar tareas (conexiones, indicadores de carga, etc)
+    - Siempre proporcionamos informacion util en el error (e.message)
+
+*/
+
+try {
+    // Bloque de codigo que puede lanzar errores
+    const resultado = 10 / 0;
+    console.log(resultado); // Infinity
+    throw new Error("Error personalizado")
+
+} catch (error) {
+    // Codigo para manejar el error
+    console.error("Ocurrio un error: ", error.message); // main.js:311 Ocurrio un error:  Error personalizado
+
+} finally { // OPCIONAL
+    // Codigo que se ejecuta siempre con o sin error
+    console.log("Esto se ejecuta siempre"); 
+}

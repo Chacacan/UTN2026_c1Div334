@@ -1,6 +1,6 @@
 # UTN2026_c1Div334
 
-## FECHA RECUPERATORIO 1ER PARCIAL -> *Martes 2 junio en paralelo a la clase*
+## FECHA RECUPERATORIO 1ER PARCIAL -> *Lunes 08 de junio en paralelo a la clase*
 
 ## Prox clase 01/06
 ## Que es un CRUD?
@@ -21,6 +21,8 @@ Es una aplicacion que realiza operaciones de creacion, lectura, actualizacion y 
 
 ## Videos recomendados
 ### [Clase 2hs / Protocolo HTTP y lenguaje HTML](https://www.youtube.com/watch?v=l6oF_RpBf64)
+
+### [Playlist TodoCode / Programacion Web](https://www.youtube.com/watch?v=lC6JOQLIgp0&list=PLQxX2eiEaqbxx6Ds5bd1F6LZJo7_OnZhV)
 
 ### [Taller Tecnicas de estudio](https://www.youtube.com/watch?v=5ens8pb5KpA)
 

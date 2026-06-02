@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de frutas</title>
+    <link rel="stylesheet" href="Parcial practicaFruteria EXTRA sin CSS/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body>
+<body onload="inicializar()">
 
     <!-- Header -->
     <header class="header">
-
         <a href="index.html">
             <div class="logo">Frutería</div>
         </a>
         
         <div class="nombreAlumno"></div>
         
-        <input type="text" placeholder="Buscar..." class="barra-busqueda">
+        <input type="text" placeholder="Buscar..." class="barra-busqueda" oninput="imprimirFrutas('filtro')">
         
         <div class="carrito">
             <span>Carrito: <span id="contador-carrito">0</span> productos</span>
@@ -27,26 +28,26 @@
     
     <!-- Contenedor principal -->
     <main>
+        <div id="snackbar"></div>
 		<section class="seccion-productos">
 		    <h2>Nuestras frutas</h2>
+            <div class="row-buttons"></div>
 		    <div class="contenedor-productos"></div>
 		</section>
 
 
 		<!-- Seccion carrito -->
 		<section class="seccion-carrito">
-		    <h2>Carrito</h2>
-		    
+		    <h2>Carrito</h2>		    
 		    <div id="items-carrito">
-		        <p>No hay elementos en el carrito.</p>
-		    </div>
-
+		        <p id="mensaje-carrito"><i class="fas fa-shopping-cart"></i> No hay elementos en el carrito. <i class="fas fa-shopping-cart"></i></p>
+                <ul class="lista-carrito"></ul>
+		    </div>            
 		    <div class="total-carrito">
-		        <p>Total: <span id="precio-total">$0.00</span></p>
-		    
+		        <p>Total: <span id="precio-total"></span></p>		    
 		    </div>
 		</section>
-
     </main>
+    <script src="Parcial practicaFruteria EXTRA sin CSS/js/main.js"></script>
 </body>
 </html>

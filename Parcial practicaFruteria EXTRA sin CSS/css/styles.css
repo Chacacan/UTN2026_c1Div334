@@ -1,0 +1,208 @@
+/* Ejercicio 10_____________
+• Estila la pagina tal cual está en la imagen sample.png */
+
+/* BODY */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: green;
+}
+
+.header a {
+    text-decoration: none;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.nombreAlumno {
+    font-size: 18px;
+    color: white;
+}
+
+.nombreAlumno span {
+    font-weight: bold;
+    color: black;
+}
+
+.barra-busqueda {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.carrito {
+    font-size: 16px;
+    color: white;
+}
+
+#contador-carrito {
+    font-weight: bold;
+    color: #000;
+}
+
+
+/* MAIN */
+/* Contenedor Principal */
+
+.seccion-productos {
+    padding: 20px;
+}
+
+.seccion-productos h2 {
+    margin-left: 40%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-bottom: 15px;
+}
+
+.row-buttons {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 20px;
+}
+
+.btn-orden {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.contenedor-productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card-producto {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+.card-producto h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+.imagen-fruta{
+    width: 70px;
+    height: 70px;
+}
+
+.btn-agregarCarrito {
+    margin-top: 10px;
+    padding: 10px 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Seccion Carrito */
+
+.seccion-carrito {
+    border-top: 1px solid #ccc;
+    padding: 20px;
+    background-color: lightgrey;
+}
+
+.seccion-carrito h2{
+    margin-left: 40%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-bottom: 15px;
+}
+
+.total-carrito {
+    display: flex;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    justify-content: end;
+}
+
+.lista-carrito {
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+.bloque-item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.boton-eliminar{
+    margin-left: 10px;
+    padding: 4px 8px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.boton-sumar{
+    margin-left: 10px;
+    padding: 4px 8px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}
+
+#btn-vaciar{
+    margin-top: 10px;
+    padding: 10px 10px;    
+    background-color: transparent;
+    color: black;
+    border: 2px solid red;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#btn-vaciar:hover{
+    background-color: red;
+    color: white;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 300px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    border-radius: 10px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1000;
+    top: 30px;
+    right: 30px;
+    transform: translateX(100px);
+    opacity: 0;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+#snackbar.mostrar {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
